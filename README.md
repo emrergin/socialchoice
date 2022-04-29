@@ -5,7 +5,7 @@ This includes many easy to use voting systems for you and your family to decide 
 Will update with more and more voting systems in the future, including another class of voting rules like approval voting and such.
 
 ### References
-- Can, Burak & Ergin, Emre & Pourpouneh, Mohsen, 2017. "[Condorcet versus participation criterion in social welfare rules](https://cris.maastrichtuniversity.nl/ws/portalfiles/portal/16119214/RM17020.pdf),"Research Memorandum 020, Maastricht University, Graduate School of Business and Economics (GSBE).
+- Can, Burak, Ergin, Emre & Pourpouneh, Mohsen, 2017. "[Condorcet versus participation criterion in social welfare rules](https://cris.maastrichtuniversity.nl/ws/portalfiles/portal/16119214/RM17020.pdf),"Research Memorandum 020, Maastricht University, Graduate School of Business and Economics (GSBE).
 - Copeland, A. H. (1951). A reasonable social welfare function. In Mimeographed notes from a Seminar on Applications of Mathematics to the Social Sciences, University of Michigan.
 - Black, D., R. A. Newing, I. McLean, A. McMillan, and B. L. Monroe (1958). The theory of committees and elections. Springer.
 - Simpson, P. B. (1969). On defining areas of voter choice: Professor tullock on stable voting. The Quarterly Journal of Economics 83(3), 478–490.
