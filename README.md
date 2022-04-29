@@ -2,6 +2,8 @@
 
 This includes many easy to use voting systems for you and your family to decide where to eat dinner or how to stop global warming.
 
+Will update with more and more voting systems in the future, including another class of voting rules like approval voting and such.
+
 ### References
 - Can, Burak & Ergin, Emre & Pourpouneh, Mohsen, 2017. "[Condorcet versus participation criterion in social welfare rules](https://cris.maastrichtuniversity.nl/ws/portalfiles/portal/16119214/RM17020.pdf),"Research Memorandum 020, Maastricht University, Graduate School of Business and Economics (GSBE).
 - Copeland, A. H. (1951). A reasonable social welfare function. In Mimeographed notes from a Seminar on Applications of Mathematics to the Social Sciences, University of Michigan.
