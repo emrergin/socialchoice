@@ -3,14 +3,14 @@
   import Footer from './lib/Footer.svelte'
 </script>
 
-<main> 
+<main class="grid-component font-sans"> 
 
   <Input />
   <Footer />
 
 </main>
 
-<style>
+<!-- <style>
   :root {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
       Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
@@ -50,4 +50,4 @@
   }
 }
 
-</style>
+</style> -->
