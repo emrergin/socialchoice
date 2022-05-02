@@ -21,48 +21,82 @@
     let adaylar=``;
 
     $: ornek=voters.join("\n");
-    $: adaylar=voters[0].split(`,`).sort();
+    $: {adaylar=voters[0].split(`,`).sort();
+        if (adaylar[0]===``){adaylar.shift();}
+    }
+    
 
     function auto_grow(element) {
+        element.scrollTop = element.scrollHeight;
         element.style.height = "5px";
-        element.style.height = (element.scrollHeight)+"px";
+        element.style.height = (element.scrollHeight)+"px";       
     }
 
     function adayDugme(){
-       document.getElementById(`votesInput`).value+=event.target.textContent;
-       auto_grow(document.getElementById(`votesInput`));
-       event.target.disabled=true;
+        if (voters[voters.length-1]===``){
+            voters[voters.length-1]=event.target.textContent;
+        }
+        else{
+            let geriyeKalanSayisi=voters[0].split(`,`).length-voters[voters.length-1].split(`,`).length;
+            if(geriyeKalanSayisi===0){
+                voters=[...voters, event.target.textContent];
+            }
+            else{
+                voters[voters.length-1]+=`,${event.target.textContent}`
+                if (geriyeKalanSayisi===1){           
+                    voters=[...voters,``];
+                }
+            }  
+        }       
+        isAlreadyIncluded(voters);
+        auto_grow(document.getElementById(`votesInput`));
+    }
+
+    function checkValidity(inputElement){
+        valid=isPermutationArray(inputElement.value.
+            replace(/  +/ig, ' ')
+            .replace(/(\t| )*,(\t| )*/ig, ',')
+            .split("\n")
+            .map(a=>a.trim()));
+    }
+
+    function isAlreadyIncluded(allInput){
+        let kucukler=document.querySelectorAll(".kucukDugme");
+        kucukler.forEach((kucuk) => {
+            if (allInput[allInput.length-1].includes(kucuk.textContent)){
+                kucuk.disabled=true;
+            }
+            else{
+                kucuk.disabled=false;
+            }
+        });
     }
 </script>
 <div id="input" class="flex flex-col justify-center items-center px-4 gap-4">
-<p>Please enter ranked votes for each alternative, separated by comma.</p>
-<p>Each row must include the same alternatives.</p>
+<p class="text-center">Please enter ranked votes for each alternative, separated by comma.</p>
+<p class="text-center">Each row must include the same alternatives.</p>
 <textarea value={ornek} id="votesInput"
     class="{valid ? 'border-2 border-blue-800' : 'border-4 border-red-500'} 
     resize-none justify-self-center w-96"   
     
     on:input={event=> {
-        let gecici=event.target.value.replace(/\s\s+/g, ' ').trim();
-        gecici = gecici.replace(/ \,/g, ',');
-        gecici = gecici.replace(/\, /g, ',');
-        gecici=gecici.split("\n");
-        // console.log(gecici);
-        if (isPermutationArray(gecici)){
-            voters=gecici;
-            valid=true;
-        }else{
-            valid=false;
+        checkValidity(event.target);
+        if (valid){
+            // https://stackoverflow.com/questions/39704104/remove-white-spaces-from-string-between-comma-and-any-letter
+            let deger=event.target.value.replace(/  +/ig, ' ').replace(/(\t| )*,(\t| )*/ig, ',').split(`\n`).map(a=>a.trim());
+            voters=deger;            
         }
         auto_grow(event.target);
+        isAlreadyIncluded(voters);
     }} />
 </div>
 <div id="output" class="flex flex-col justify-center items-center px-4 gap-4">
     <p><b>Candidates</b>: 
         {#if (voters.length>1 || (ornek.endsWith(`\n`))) }
             {#each adaylar as aday}
-                <button class="btn-orange disabled:invisible px-1 py-1" on:click={adayDugme}>
-                    {aday}
-                </button>
+                <button class="kucukDugme btn-orange disabled:invisible px-1 py-1" 
+                on:click={adayDugme}
+                >{aday}</button>
             {/each}
         {:else}
             {adaylar}
