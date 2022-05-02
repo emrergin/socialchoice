@@ -5,59 +5,54 @@
     import { isPermutationArray } from '../modules/social_tools';
     import { fade, fly } from 'svelte/transition';
 
+    let ornek =``;
+    let voters=[``];
+    let valid=true;
+    let adaylar=``;
+
 	onMount(()=>{
+        voters=[
+            "Alastair,Brian,Chris",
+            "Chris,Brian,Alastair",
+            "Chris,Brian,Alastair"
+        ];
+        ornek = voters.join("\n");
         auto_grow(document.getElementById(`votesInput`));
     }
     );
 
-    let ornek = ``;
-    let voters=
-[
-    "Alastair,Brian,Chris",
-    "Chris,Brian,Alastair",
-    "Chris,Brian,Alastair"
-];
 
-    let valid=true;
-    let adaylar=``;
-
-    $: {ornek=voters.join("\n");
-        if(document.getElementById(`votesInput`)){
-            document.getElementById(`votesInput`).value=ornek;
-            auto_grow(document.getElementById(`votesInput`));
-        } 
-    }
     $: {adaylar=voters[0].split(`,`).sort();
         if (adaylar[0]===``){adaylar.shift();}
     }
-    
+  
 
     function auto_grow(element) {
-        // ornek=voters.join("\n");
-        // element.value=ornek;
+        element.value=ornek;
         element.focus(); 
         element.style.height = "5px";
-        element.style.height = (element.scrollHeight)+"px";
-        element.scrollTop = element.scrollHeight; 
-        // console.log(element.value);
-        // console.log(ornek);     
+        element.style.height = (element.scrollHeight)+10+"px";
+        element.scrollTop = element.scrollHeight;    
     }
 
     function adayDugme(){
+        if (voters[voters.length-1]===``){
+            voters[voters.length-1]=`${event.target.textContent}`
+            return false;
+        }
         let geriyeKalanSayisi=voters[0].split(`,`).length-voters[voters.length-1].split(`,`).length;
         if(geriyeKalanSayisi===0){
             voters=[...voters, event.target.textContent];
         }
         else{
             voters[voters.length-1]+=`,${event.target.textContent}`
-        }        
-        voters=voters;
-        checkValidity(event.target);
-        // auto_grow(document.getElementById(`votesInput`));
+        }      
+        ornek = voters.join("\n");  
+        auto_grow(document.getElementById(`votesInput`));
     }
 
-    function checkValidity(inputElement){
-        valid=isPermutationArray(inputElement.value);
+    function checkValidity(array){
+        valid=isPermutationArray(array);
     }
 
 </script>
@@ -67,17 +62,19 @@
 <textarea value={ornek} id="votesInput"
     class="{valid ? 'border-2 border-blue-800' : 'border-4 border-red-500'} 
     resize-none justify-self-center w-11/12 overflow-auto 
-    md:w-96"   
-    
+    md:w-96"  
     on:input={event=> {
         let oncekiDeger=voters;
+        ornek=event.target.value;
         // https://stackoverflow.com/questions/39704104/remove-white-spaces-from-string-between-comma-and-any-letter
         voters=event.target.value.replace(/  +/ig, ' ').replace(/(\t| )*,(\t| )*/ig, ',').split(`\n`).map(a=>a.trim());
         checkValidity(voters);
         if (!valid){
             voters= oncekiDeger;
         }
-    }} />
+        auto_grow(document.getElementById(`votesInput`));
+    }}
+  />
 </div>
 <div id="output" class="flex flex-col justify-center items-center px-4 gap-4">
     <p><b>Candidates</b>: 
@@ -99,7 +96,6 @@
             <li>{voter.replace(/,/g,` > `)}</li>
         {/each}
     </ul>
-
 </div>    
 
 
