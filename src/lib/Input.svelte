@@ -60,7 +60,8 @@
 <p class="text-center">Each row must include the same alternatives.</p>
 <textarea value={ornek} id="votesInput"
     class="{valid ? 'border-2 border-blue-800' : 'border-4 border-red-500'} 
-    resize-none justify-self-center w-96 overflow-auto"   
+    resize-none justify-self-center w-11/12 overflow-auto 
+    md:w-96"   
     
     on:input={event=> {
         checkValidity(event.target);
@@ -103,37 +104,37 @@
 <div id="sonuclar"
 class="grid-component md:col-start-2 md:row-start-1">
 <h3>Social Welfare Rules</h3>
-    <button class="btn-orange  w-48 drop-shadow-md py-4 " on:click={valid? alert(kemenyRule(voters).join('\r\n')): false}>
+    <button class="btn-orange  w-full drop-shadow-md py-4 md:w-48" on:click={valid? alert(kemenyRule(voters).join('\r\n')): false}>
         Kemeny
     </button>
 
-    <button class="btn-orange w-48 drop-shadow-md py-4 " on:click={valid? alert(skorWRule(voters,bordaSkor).join('\r\n')): false}>
+    <button class="btn-orange  w-full drop-shadow-md py-4 md:w-48 " on:click={valid? alert(skorWRule(voters,bordaSkor).join('\r\n')): false}>
         Borda
     </button>
 
-    <button class="btn-orange w-48 drop-shadow-md py-4 " on:click={valid? alert(skorWRule(voters,minMaxSkor).join('\r\n')): false}>
+    <button class="btn-orange  w-full drop-shadow-md py-4 md:w-48" on:click={valid? alert(skorWRule(voters,minMaxSkor).join('\r\n')): false}>
         Min-Max
     </button>
 
-    <button class="btn-orange w-48 drop-shadow-md py-4 " on:click={valid?  alert(slaterRule(voters).join('\r\n')): false}>
+    <button class="btn-orange  w-full drop-shadow-md py-4 md:w-48" on:click={valid?  alert(slaterRule(voters).join('\r\n')): false}>
         Slater
     </button>
 
-    <button class="btn-orange w-48 drop-shadow-md py-4 " on:click={valid?  alert(skorWRule(voters,copelandSkor).join('\r\n')): false}>
+    <button class="btn-orange  w-full drop-shadow-md py-4 md:w-48" on:click={valid?  alert(skorWRule(voters,copelandSkor).join('\r\n')): false}>
         Copeland
     </button>
 
     <h3>Social Choice Rules</h3>
 
-    <button class="btn-orange w-48 drop-shadow-md py-4" on:click={valid? alert(skorCRule(voters,bordaSkor).join('\r\n')): false}>
+    <button class="btn-orange  w-full drop-shadow-md py-4 md:w-48" on:click={valid? alert(skorCRule(voters,bordaSkor).join('\r\n')): false}>
         Borda
     </button>
 
-    <button class="btn-orange w-48 drop-shadow-md py-4" on:click={valid? alert(skorCRule(voters,minMaxSkor).join('\r\n')): false}>
+    <button class="btn-orange  w-full drop-shadow-md py-4 md:w-48" on:click={valid? alert(skorCRule(voters,minMaxSkor).join('\r\n')): false}>
         Min-Max
     </button>
 
-    <button class="btn-orange w-48 drop-shadow-md py-4" on:click={valid?  alert(skorCRule(voters,copelandSkor).join('\r\n')): false}>
+    <button class="btn-orange  w-full drop-shadow-md py-4 md:w-48" on:click={valid?  alert(skorCRule(voters,copelandSkor).join('\r\n')): false}>
         Copeland
     </button>
 
