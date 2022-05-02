@@ -3,6 +3,7 @@
     import { kemenyRule,skorWRule,bordaSkor,minMaxSkor, skorCRule
     ,slaterRule ,copelandSkor ,tournament} from '../modules/fonksiyonlar';
     import { isPermutationArray } from '../modules/social_tools';
+    import { fade, fly } from 'svelte/transition';
 
 	onMount(()=>{
         auto_grow(document.getElementById(`votesInput`));
@@ -27,28 +28,21 @@
     
 
     function auto_grow(element) {
-        element.scrollTop = element.scrollHeight;
         element.style.height = "5px";
-        element.style.height = (element.scrollHeight)+"px";       
+        element.style.height = (element.scrollHeight)+"px"; 
+        element.scrollTop = element.scrollHeight;    
     }
 
     function adayDugme(){
-        if (voters[voters.length-1]===``){
-            voters[voters.length-1]=event.target.textContent;
+        let geriyeKalanSayisi=voters[0].split(`,`).length-voters[voters.length-1].split(`,`).length;
+        if(geriyeKalanSayisi===0){
+            voters=[...voters, event.target.textContent];
         }
         else{
-            let geriyeKalanSayisi=voters[0].split(`,`).length-voters[voters.length-1].split(`,`).length;
-            if(geriyeKalanSayisi===0){
-                voters=[...voters, event.target.textContent];
-            }
-            else{
-                voters[voters.length-1]+=`,${event.target.textContent}`
-                if (geriyeKalanSayisi===1){           
-                    voters=[...voters,``];
-                }
-            }  
-        }       
-        isAlreadyIncluded(voters);
+            voters[voters.length-1]+=`,${event.target.textContent}`
+        }        
+        // isAlreadyIncluded(voters);
+        checkValidity(event.target);
         auto_grow(document.getElementById(`votesInput`));
     }
 
@@ -60,24 +54,13 @@
             .map(a=>a.trim()));
     }
 
-    function isAlreadyIncluded(allInput){
-        let kucukler=document.querySelectorAll(".kucukDugme");
-        kucukler.forEach((kucuk) => {
-            if (allInput[allInput.length-1].includes(kucuk.textContent)){
-                kucuk.disabled=true;
-            }
-            else{
-                kucuk.disabled=false;
-            }
-        });
-    }
 </script>
 <div id="input" class="flex flex-col justify-center items-center px-4 gap-4">
 <p class="text-center">Please enter ranked votes for each alternative, separated by comma.</p>
 <p class="text-center">Each row must include the same alternatives.</p>
 <textarea value={ornek} id="votesInput"
     class="{valid ? 'border-2 border-blue-800' : 'border-4 border-red-500'} 
-    resize-none justify-self-center w-96"   
+    resize-none justify-self-center w-96 overflow-auto"   
     
     on:input={event=> {
         checkValidity(event.target);
@@ -87,16 +70,21 @@
             voters=deger;            
         }
         auto_grow(event.target);
-        isAlreadyIncluded(voters);
+        // isAlreadyIncluded(voters);
     }} />
 </div>
 <div id="output" class="flex flex-col justify-center items-center px-4 gap-4">
     <p><b>Candidates</b>: 
         {#if (voters.length>1 || (ornek.endsWith(`\n`))) }
             {#each adaylar as aday}
-                <button class="kucukDugme btn-orange disabled:invisible px-1 py-1" 
-                on:click={adayDugme}
-                >{aday}</button>
+                <!-- {#if (!voters[voters.length-1].includes(aday)||
+                voters[0].split(`,`).length===voters[voters.length-1].split(`,`).length)} -->
+                    <button class="kucukDugme btn-orange px-1 py-1 disabled:invisible" 
+                    disabled={voters[voters.length-1].includes(aday)&&
+                    voters[0].split(`,`).length!==voters[voters.length-1].split(`,`).length}
+                    on:click={adayDugme}
+                    >{aday}</button>
+                <!-- {/if} -->
             {/each}
         {:else}
             {adaylar}
