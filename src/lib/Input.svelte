@@ -21,16 +21,26 @@
     let valid=true;
     let adaylar=``;
 
-    $: ornek=voters.join("\n");
+    $: {ornek=voters.join("\n");
+        if(document.getElementById(`votesInput`)){
+            document.getElementById(`votesInput`).value=ornek;
+            auto_grow(document.getElementById(`votesInput`));
+        } 
+    }
     $: {adaylar=voters[0].split(`,`).sort();
         if (adaylar[0]===``){adaylar.shift();}
     }
     
 
     function auto_grow(element) {
+        // ornek=voters.join("\n");
+        // element.value=ornek;
+        element.focus(); 
         element.style.height = "5px";
-        element.style.height = (element.scrollHeight)+"px"; 
-        element.scrollTop = element.scrollHeight;    
+        element.style.height = (element.scrollHeight)+"px";
+        element.scrollTop = element.scrollHeight; 
+        // console.log(element.value);
+        // console.log(ornek);     
     }
 
     function adayDugme(){
@@ -41,17 +51,13 @@
         else{
             voters[voters.length-1]+=`,${event.target.textContent}`
         }        
-        // isAlreadyIncluded(voters);
+        voters=voters;
         checkValidity(event.target);
-        auto_grow(document.getElementById(`votesInput`));
+        // auto_grow(document.getElementById(`votesInput`));
     }
 
     function checkValidity(inputElement){
-        valid=isPermutationArray(inputElement.value.
-            replace(/  +/ig, ' ')
-            .replace(/(\t| )*,(\t| )*/ig, ',')
-            .split("\n")
-            .map(a=>a.trim()));
+        valid=isPermutationArray(inputElement.value);
     }
 
 </script>
@@ -64,28 +70,24 @@
     md:w-96"   
     
     on:input={event=> {
-        checkValidity(event.target);
-        if (valid){
-            // https://stackoverflow.com/questions/39704104/remove-white-spaces-from-string-between-comma-and-any-letter
-            let deger=event.target.value.replace(/  +/ig, ' ').replace(/(\t| )*,(\t| )*/ig, ',').split(`\n`).map(a=>a.trim());
-            voters=deger;            
+        let oncekiDeger=voters;
+        // https://stackoverflow.com/questions/39704104/remove-white-spaces-from-string-between-comma-and-any-letter
+        voters=event.target.value.replace(/  +/ig, ' ').replace(/(\t| )*,(\t| )*/ig, ',').split(`\n`).map(a=>a.trim());
+        checkValidity(voters);
+        if (!valid){
+            voters= oncekiDeger;
         }
-        auto_grow(event.target);
-        // isAlreadyIncluded(voters);
     }} />
 </div>
 <div id="output" class="flex flex-col justify-center items-center px-4 gap-4">
     <p><b>Candidates</b>: 
         {#if (voters.length>1 || (ornek.endsWith(`\n`))) }
             {#each adaylar as aday}
-                <!-- {#if (!voters[voters.length-1].includes(aday)||
-                voters[0].split(`,`).length===voters[voters.length-1].split(`,`).length)} -->
                     <button class="kucukDugme btn-orange px-1 py-1 disabled:invisible" 
                     disabled={voters[voters.length-1].includes(aday)&&
                     voters[0].split(`,`).length!==voters[voters.length-1].split(`,`).length}
                     on:click={adayDugme}
                     >{aday}</button>
-                <!-- {/if} -->
             {/each}
         {:else}
             {adaylar}
