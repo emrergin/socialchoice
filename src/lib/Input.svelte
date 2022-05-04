@@ -1,7 +1,7 @@
 <script>
     import { onMount } from 'svelte';
     import { kemenyRule,skorWRule,bordaSkor,minMaxSkor, skorCRule
-    ,slaterRule ,copelandSkor ,tournament} from '../modules/fonksiyonlar';
+    ,slaterRule, tidemanRule ,copelandSkor ,tournament} from '../modules/fonksiyonlar';
     import { isPermutationArray } from '../modules/social_tools';
     import { fade, fly } from 'svelte/transition';
 
@@ -11,11 +11,41 @@
     let adaylar=``;
 
 	onMount(()=>{
-        voters=[
-            "Alastair,Brian,Chris",
-            "Chris,Brian,Alastair",
-            "Chris,Brian,Alastair"
-        ];
+        voters=
+        // [
+        //     "Alastair,Brian,Chris",
+        //     "Chris,Brian,Alastair",
+        //     "Chris,Brian,Alastair"
+        // ];
+        [
+            "W,X,Z,Y",
+            "W,X,Z,Y",
+            "W,X,Z,Y",
+            "W,X,Z,Y",
+            "W,X,Z,Y",
+            "W,X,Z,Y",
+            "W,X,Z,Y",
+            "W,Y,X,Z",
+            "W,Y,X,Z",
+            "X,Y,Z,W",
+            "X,Y,Z,W",
+            "X,Y,Z,W",
+            "X,Y,Z,W",
+            "X,Z,W,Y",
+            "X,Z,W,Y",
+            "X,Z,W,Y",
+            "X,Z,W,Y",
+            "X,Z,W,Y",
+            "Y,W,X,Z",
+            "Y,Z,W,X",
+            "Y,Z,W,X",
+            "Y,Z,W,X",
+            "Y,Z,W,X",
+            "Y,Z,W,X",
+            "Y,Z,W,X",
+            "Y,Z,W,X",
+            "Y,Z,W,X"
+        ]
         ornek = voters.join("\n");
         auto_grow(document.getElementById(`votesInput`));
     }
@@ -38,6 +68,7 @@
     function adayDugme(){
         if (voters[voters.length-1]===``){
             voters[voters.length-1]=`${event.target.textContent}`
+            ornek = voters.join("\n"); 
             return false;
         }
         let geriyeKalanSayisi=voters[0].split(`,`).length-voters[voters.length-1].split(`,`).length;
@@ -100,43 +131,58 @@
 
 
 <div id="sonuclar"
-class="grid-component md:col-start-2 md:row-start-1">
+class="grid-component md:col-start-2 self-start md:row-start-1">
 <h3>Social Welfare Rules</h3>
-    <button class="btn-orange  w-full drop-shadow-md py-4 md:w-48" on:click={valid? alert(kemenyRule(voters).join('\r\n')): false}>
+    <button class="btn-orange w-full drop-shadow-md py-4  hover:-translate-y-0.5  hover:scale-110 hover:drop-shadow-lg md:w-48" 
+    on:click={valid? alert(kemenyRule(voters).join('\r\n')): false}>
         Kemeny
     </button>
 
-    <button class="btn-orange  w-full drop-shadow-md py-4 md:w-48 " on:click={valid? alert(skorWRule(voters,bordaSkor).join('\r\n')): false}>
+    <button class="btn-orange w-full drop-shadow-md py-4  hover:-translate-y-0.5  hover:scale-110 hover:drop-shadow-lg md:w-48" 
+    on:click={valid? alert(skorWRule(voters,bordaSkor).join('\r\n')): false}>
         Borda
     </button>
 
-    <button class="btn-orange  w-full drop-shadow-md py-4 md:w-48" on:click={valid? alert(skorWRule(voters,minMaxSkor).join('\r\n')): false}>
+    <button class="btn-orange w-full drop-shadow-md py-4  hover:-translate-y-0.5  hover:scale-110 hover:drop-shadow-lg md:w-48" 
+    on:click={valid? alert(skorWRule(voters,minMaxSkor).join('\r\n')): false}>
         Min-Max
     </button>
 
-    <button class="btn-orange  w-full drop-shadow-md py-4 md:w-48" on:click={valid?  alert(slaterRule(voters).join('\r\n')): false}>
+    <button class="btn-orange w-full drop-shadow-md py-4  hover:-translate-y-0.5  hover:scale-110 hover:drop-shadow-lg md:w-48" 
+    on:click={valid?  alert(slaterRule(voters).join('\r\n')): false}>
         Slater
     </button>
 
-    <button class="btn-orange  w-full drop-shadow-md py-4 md:w-48" on:click={valid?  alert(skorWRule(voters,copelandSkor).join('\r\n')): false}>
+    <button class="btn-orange w-full drop-shadow-md py-4  hover:-translate-y-0.5  hover:scale-110 hover:drop-shadow-lg md:w-48" 
+    on:click={valid?  alert(skorWRule(voters,copelandSkor).join('\r\n')): false}>
         Copeland
+    </button>
+
+    <button class="btn-orange w-full drop-shadow-md py-4  hover:-translate-y-0.5  hover:scale-110 hover:drop-shadow-lg md:w-48" 
+    on:click={valid?  alert(tidemanRule(voters).join('\r\n')): false}>
+        Tideman
     </button>
 
     <h3>Social Choice Rules</h3>
 
-    <button class="btn-orange  w-full drop-shadow-md py-4 md:w-48" on:click={valid? alert(skorCRule(voters,bordaSkor).join('\r\n')): false}>
+    <button class="btn-orange w-full drop-shadow-md py-4  hover:-translate-y-0.5  hover:scale-110 hover:drop-shadow-lg md:w-48" 
+    on:click={valid? alert(skorCRule(voters,bordaSkor).join('\r\n')): false}>
         Borda
     </button>
 
-    <button class="btn-orange  w-full drop-shadow-md py-4 md:w-48" on:click={valid? alert(skorCRule(voters,minMaxSkor).join('\r\n')): false}>
+    <button class="btn-orange w-full drop-shadow-md py-4  hover:-translate-y-0.5  hover:scale-110 hover:drop-shadow-lg md:w-48" 
+    on:click={valid? alert(skorCRule(voters,minMaxSkor).join('\r\n')): false}>
         Min-Max
     </button>
 
-    <button class="btn-orange  w-full drop-shadow-md py-4 md:w-48" on:click={valid?  alert(skorCRule(voters,copelandSkor).join('\r\n')): false}>
+    <button class="btn-orange w-full drop-shadow-md py-4  hover:-translate-y-0.5  hover:scale-110 hover:drop-shadow-lg md:w-48" 
+    on:click={valid?  alert(skorCRule(voters,copelandSkor).join('\r\n')): false}>
         Copeland
     </button>
 
-    <!-- <button on:click={valid?  alert(tournament(voters,false).join('\r\n')): false}>
+
+
+    <!-- <button on:click={tournament(voters,false)}>
         Tournament
     </button> -->
 

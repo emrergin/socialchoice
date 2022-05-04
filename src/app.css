@@ -8,12 +8,32 @@
         @apply col-span-2 text-2xl font-bold mb-3.5 mt-3.5;
     }
 
+    a{
+        @apply underline decoration-2 decoration-pink-500 font-bold transition-all duration-300 hover:text-lg hover:text-cyan-600;
+    }
+
+    footer{
+        @apply flex fixed inset-x-0 bottom-0 justify-center items-center bg-orange-100 w-full h-8 z-10;
+    }
+
+
+    /* position:fixed;
+    bottom:0;
+    left:0px;
+    right:0px;
+    background-color: #ffedd5;
+    width:100vw;
+    height:4vh;
+    display: flex;
+    align-items: center;
+    justify-content:center;
+    z-index: 10; */
 }
 
 @layer components {
     .btn-orange {
       @apply  bg-orange-100 border-2 text-orange-500 rounded-full
-      hover:bg-orange-400 hover:text-orange-50 hover:font-bold;
+      transition-all duration-300 hover:bg-orange-400 hover:text-orange-50 hover:font-bold;
     }
     .grid-component{
         @apply grid md:grid-cols-2 gap-2 row-span-2 gap-2.5 p-4 place-items-center;

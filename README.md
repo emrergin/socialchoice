@@ -19,3 +19,4 @@ Will update with more and more voting systems in the future, including another c
 ### What I learned
 - This is my first project with [Svelte](https://svelte.dev/).
 - This is also the first project that I used [TailwindCSS](https://tailwindcss.com/).
+- Finding unique arrays or sets are not supported in a straightforward way.

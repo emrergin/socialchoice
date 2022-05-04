@@ -67,5 +67,20 @@ function setDifference(A, B) {
   return result.length;
 }
 
+function checkIfLastAddedPairBreaksTransitivity(arrayofPairs,pair){
+  if (arrayofPairs.length<2){return false;}
 
-export { permutator, pairs, pairsString, isPermutationArray, setDifference };
+  let pairsInWhichTheFirstElementLoses=arrayofPairs.filter(a=>a[0]===pair[1])
+  let pairsInWhichTheSecondElementWins=arrayofPairs.filter(a=>a[1]===pair[0])
+
+  for (let iPair of pairsInWhichTheFirstElementLoses){    
+    if (pairsInWhichTheSecondElementWins.filter(a=>a[0]==iPair[1]).length){
+      return true;
+    }
+  }
+  
+  return false;
+}
+
+export { permutator, pairs, pairsString, isPermutationArray, setDifference,
+  checkIfLastAddedPairBreaksTransitivity };

@@ -1,52 +1,9 @@
 
-import {permutator, pairs, pairsString, setDifference} from './social_tools';
+import {permutator, pairs, pairsString, setDifference,checkIfLastAddedPairBreaksTransitivity} from './social_tools';
 
 function prepareInput(inputArray){
 	return inputArray.map(a=>a.split(`,`));	 
 }
-
-
-// function kendallTauDistance(rank1,rank2){
-//     let uzaklik=0;
-//     const rankUzun = rank1.length>rank2.length? rank1 : rank2;
-// 	const butunCiftler = pairs(rankUzun);
-
-//     // @ts-ignore
-//     for (let i=0; i<butunCiftler.length; i++){
-//         const i1=rank1.indexOf(butunCiftler[i][0]);
-//         const i2=rank1.indexOf(butunCiftler[i][1]);
-//         const i3=rank2.indexOf(butunCiftler[i][0]);
-//         const i4=rank2.indexOf(butunCiftler[i][1]);
-
-//         if ((i1>i2 && i4>i3)||(i2>i1 && i3>i4)){
-//             uzaklik++;
-//         }
-//     }
-    
-//     return uzaklik;
-// }
-
-// // function kendallTauDistance2(pairs1,pairs2){
-// //     return setDifference(pairsString(pairs1),(pairs2));
-// // }
-
-// function kemenyRule2(ranks){
-// 	ranks=prepareInput(ranks);
-// 	let uzakliklar=[];
-// 	const butunRanklar=permutator(ranks[0]);
-// 	for (let ruler of butunRanklar){
-// 		let singleDistance=0;
-// 		for (let voter of ranks){
-// 			singleDistance+=kendallTauDistance(ruler,voter);
-// 		}
-// 		uzakliklar.push({ruler:ruler,uzaklik:singleDistance});
-// 	}
-	
-// 	let minimumUzaklik=Math.min(...uzakliklar.map(a=>a.uzaklik));
-// 	// return uzakliklar.filter(a=>a.uzaklik===minimumUzaklik).map(a=>a.ruler);
-// 	// return(uzakliklar.filter(a=>a.uzaklik===minimumUzaklik).map(a=>a.ruler).join('\r\n'));
-// 	return(uzakliklar.filter(a=>a.uzaklik===minimumUzaklik).map(a=>a.ruler));
-// }
 
 function kemenyRule(ranks){
 	ranks=prepareInput(ranks);
@@ -67,10 +24,10 @@ function kemenyRule(ranks){
 	return(uzakliklar.filter(a=>a.uzaklik===minimumUzaklik).map(a=>a.ruler));
 }
 
-function tournament(ranks,readytoCalculate){
+function tournament(ranks,readytoCalculate=true,returnScores=false){
 	readytoCalculate? ``: ranks=prepareInput(ranks);
 	let butunCiftler = pairs(ranks[0]);
-	console.log(butunCiftler);
+	let ciftlerVeSkorlar={};
 	for (let cift of butunCiftler){
 		let zaferSayisi=0;
 		for (let voter of ranks){
@@ -83,20 +40,24 @@ function tournament(ranks,readytoCalculate){
 		}
 		if (zaferSayisi<0){
 			cift=cift.reverse();
-		}else if(zaferSayisi===0){
-			const index = butunCiftler.indexOf(cift);
-			if (index > -1) {
-				butunCiftler.splice(index,1);
-			}						
+		}
+		if(zaferSayisi!==0){
+			ciftlerVeSkorlar[cift]=Math.abs(zaferSayisi);					
 		}
 	}
-	return butunCiftler;
+	// console.log(ciftlerVeSkorlar);
+	if (returnScores){
+		return ciftlerVeSkorlar;
+	}
+	else{
+		// return Object.getOwnPropertyNames(ciftlerVeSkorlar).map(a=>a.split(`,`));
+		return (Object.getOwnPropertyNames(ciftlerVeSkorlar).map(a=>a.split(`,`)))
+	}
 }
 
 function slaterRule(ranks){
-
 	ranks=prepareInput(ranks);	
-	let tur= tournament(ranks,true).map(a=>`${a}`);
+	let tur= tournament(ranks).map(a=>`${a}`);
 
 	const butunRanklar=permutator(ranks[0]);
 	let uzakliklar=[];
@@ -111,9 +72,65 @@ function slaterRule(ranks){
 	return(uzakliklar.filter(a=>a.uzaklik===minimumUzaklik).map(a=>a.ruler));
 }
 
-function copelandSkor(ranks){
+function tidemanRule(ranks){
+	ranks=prepareInput(ranks);
+	let ciftlerVeSkorlar = tournament(ranks,true,true);
 
-	let result = tournament(ranks,true).map(a=>a[0]).reduce(function (acc, curr) {
+	let allPairs = Object.getOwnPropertyNames(ciftlerVeSkorlar);
+	let allPairsOfPairs=pairs(allPairs);
+	let allPermutationsOfRanks=permutator(allPairs);
+
+	let probablePermutations=[];
+
+	loop1: for (let order of allPermutationsOfRanks){
+		for (let pairOfPair of allPairsOfPairs){
+			const i1=order.indexOf(pairOfPair[0]);
+			const i2=order.indexOf(pairOfPair[1]);
+			const skor1=ciftlerVeSkorlar[pairOfPair[0]];
+			const skor2=ciftlerVeSkorlar[pairOfPair[1]];
+					
+			if (((i1>i2)&&(skor1>skor2))||((i1<i2)&&(skor1<skor2))){
+				continue loop1;
+			}			
+		}
+		probablePermutations.push(order);		
+	}
+
+	let allListsOfPairs=[];
+
+	for (let probablePermutation of probablePermutations){
+		console.log(probablePermutation);
+		let result=[];
+		for (let pair of probablePermutation){
+			pair=pair.split(`,`);
+			console.log(result)
+			if (!checkIfLastAddedPairBreaksTransitivity(result,pair)){
+				result.push(pair);
+			}
+			else{
+				result.push(pair.reverse());
+			}
+		}
+		allListsOfPairs.push(result)
+	}
+
+	let adaylar=[];
+	const butunRanklar=permutator(ranks[0]);
+
+	loop1: for (let ruler of butunRanklar){
+		for (let pairsFound of allListsOfPairs){					
+			if (pairs(ruler).sort().join(`,`)===pairsFound.sort().join(`,`)){
+				adaylar.push(ruler);
+				continue loop1;
+			}			
+		}				
+	}
+
+	return(adaylar);	
+}
+
+function copelandSkor(ranks){
+	let result = tournament(ranks).map(a=>a[0]).reduce(function (acc, curr) {
 		return acc[curr] ? ++acc[curr] : acc[curr] = 1, acc
 	  }, {});
 
@@ -203,5 +220,5 @@ function skorCRule(ranks,fonksiyon){
 }
 
 export {kemenyRule, bordaSkor,minMaxSkor, skorWRule, skorCRule
-	,slaterRule ,copelandSkor
+	,slaterRule ,tidemanRule ,copelandSkor
 ,tournament};
