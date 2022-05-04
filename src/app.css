@@ -9,7 +9,7 @@
     }
 
     footer{
-        @apply flex fixed inset-x-0 bottom-0 justify-center items-center bg-orange-100 w-full h-8 z-10;
+        @apply flex fixed h-14 px-4 inset-x-0 bottom-0 justify-center items-center bg-orange-100 w-full md:h-8 md:px-0 z-10 text-center;
     }
 
     a{
@@ -41,7 +41,7 @@
     }
             /* https://svelte.dev/repl/033e824fad0a4e34907666e7196caec4?version=3.4.1 */
     .modal-box{
-        @apply relative w-[40rem] my-8 mx-auto rounded-lg bg-white p-6 overflow-auto;
+        @apply relative w-screen md:w-[40rem] my-8 mx-auto rounded-lg bg-white p-6 overflow-auto;
     }  
     .modal-background{
         @apply flex flex-col fixed w-screen h-screen z-20 top-0 left-0 justify-center bg-black bg-opacity-50;
