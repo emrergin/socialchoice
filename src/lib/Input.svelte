@@ -12,40 +12,12 @@
 
 	onMount(()=>{
         voters=
-        // [
-        //     "Alastair,Brian,Chris",
-        //     "Chris,Brian,Alastair",
-        //     "Chris,Brian,Alastair"
-        // ];
         [
-            "W,X,Z,Y",
-            "W,X,Z,Y",
-            "W,X,Z,Y",
-            "W,X,Z,Y",
-            "W,X,Z,Y",
-            "W,X,Z,Y",
-            "W,X,Z,Y",
-            "W,Y,X,Z",
-            "W,Y,X,Z",
-            "X,Y,Z,W",
-            "X,Y,Z,W",
-            "X,Y,Z,W",
-            "X,Y,Z,W",
-            "X,Z,W,Y",
-            "X,Z,W,Y",
-            "X,Z,W,Y",
-            "X,Z,W,Y",
-            "X,Z,W,Y",
-            "Y,W,X,Z",
-            "Y,Z,W,X",
-            "Y,Z,W,X",
-            "Y,Z,W,X",
-            "Y,Z,W,X",
-            "Y,Z,W,X",
-            "Y,Z,W,X",
-            "Y,Z,W,X",
-            "Y,Z,W,X"
-        ]
+            "Alastair,Brian,Chris",
+            "Chris,Brian,Alastair",
+            "Chris,Brian,Alastair"
+        ];
+        
         ornek = voters.join("\n");
         auto_grow(document.getElementById(`votesInput`));
     }

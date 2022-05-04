@@ -8,13 +8,14 @@
         @apply col-span-2 text-2xl font-bold mb-3.5 mt-3.5;
     }
 
+    footer{
+        @apply flex fixed inset-x-0 bottom-0 justify-center items-center bg-orange-100 w-full h-8 z-10;
+    }
+
     a{
         @apply underline decoration-2 decoration-pink-500 font-bold transition-all duration-300 hover:text-lg hover:text-cyan-600;
     }
 
-    footer{
-        @apply flex fixed inset-x-0 bottom-0 justify-center items-center bg-orange-100 w-full h-8 z-10;
-    }
 
 
     /* position:fixed;
