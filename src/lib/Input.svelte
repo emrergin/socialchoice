@@ -4,11 +4,14 @@
     ,slaterRule, tidemanRule ,copelandSkor ,tournament} from '../modules/fonksiyonlar';
     import { isPermutationArray } from '../modules/social_tools';
     import { fade, fly } from 'svelte/transition';
+    import Modal from './Modal.svelte'
 
     let ornek =``;
     let voters=[``];
     let valid=true;
     let adaylar=``;
+    let modal=false;
+    let modalMessage=``;
 
 	onMount(()=>{
         voters=
@@ -58,7 +61,19 @@
         valid=isPermutationArray(array);
     }
 
+    function callModal(message){
+        modalMessage=message;
+        modal=true;
+    }
+
+    function closeModel(event){
+        modal=false;
+    }
+
 </script>
+{#if modal }
+    <Modal message={modalMessage} on:close={closeModel}/>
+{/if}
 <div id="input" class="flex flex-col justify-center items-center px-4 gap-4">
 <p class="text-center">Please enter ranked votes for each alternative, separated by comma.</p>
 <p class="text-center">Each row must include the same alternatives.</p>
@@ -105,50 +120,50 @@
 <div id="sonuclar"
 class="grid-component md:col-start-2 self-start md:row-start-1">
 <h3>Social Welfare Rules</h3>
-    <button class="btn-orange w-full drop-shadow-md py-4  hover:-translate-y-0.5  hover:scale-110 hover:drop-shadow-lg md:w-48" 
-    on:click={valid? alert(kemenyRule(voters).join('\r\n')): false}>
+    <button class="btn-orange w-full drop-shadow-md py-4  hover:-translate-y-0.5 active:scale-100 hover:scale-110 hover:drop-shadow-lg  md:w-48" 
+    on:click={valid? callModal(kemenyRule(voters)): false}>
         Kemeny
     </button>
 
-    <button class="btn-orange w-full drop-shadow-md py-4  hover:-translate-y-0.5  hover:scale-110 hover:drop-shadow-lg md:w-48" 
-    on:click={valid? alert(skorWRule(voters,bordaSkor).join('\r\n')): false}>
+    <button class="btn-orange w-full drop-shadow-md py-4  hover:-translate-y-0.5 active:scale-100 hover:scale-110 hover:drop-shadow-lg md:w-48" 
+    on:click={valid? callModal(skorWRule(voters,bordaSkor)): false}>
         Borda
     </button>
 
-    <button class="btn-orange w-full drop-shadow-md py-4  hover:-translate-y-0.5  hover:scale-110 hover:drop-shadow-lg md:w-48" 
-    on:click={valid? alert(skorWRule(voters,minMaxSkor).join('\r\n')): false}>
+    <button class="btn-orange w-full drop-shadow-md py-4  hover:-translate-y-0.5 active:scale-100 hover:scale-110 hover:drop-shadow-lg md:w-48" 
+    on:click={valid? callModal(skorWRule(voters,minMaxSkor)): false}>
         Min-Max
     </button>
 
-    <button class="btn-orange w-full drop-shadow-md py-4  hover:-translate-y-0.5  hover:scale-110 hover:drop-shadow-lg md:w-48" 
-    on:click={valid?  alert(slaterRule(voters).join('\r\n')): false}>
+    <button class="btn-orange w-full drop-shadow-md py-4  hover:-translate-y-0.5 active:scale-100 hover:scale-110 hover:drop-shadow-lg md:w-48" 
+    on:click={valid?  callModal(slaterRule(voters)): false}>
         Slater
     </button>
 
-    <button class="btn-orange w-full drop-shadow-md py-4  hover:-translate-y-0.5  hover:scale-110 hover:drop-shadow-lg md:w-48" 
-    on:click={valid?  alert(skorWRule(voters,copelandSkor).join('\r\n')): false}>
+    <button class="btn-orange w-full drop-shadow-md py-4  hover:-translate-y-0.5 active:scale-100 hover:scale-110 hover:drop-shadow-lg md:w-48" 
+    on:click={valid?  callModal(skorWRule(voters,copelandSkor)): false}>
         Copeland
     </button>
 
-    <button class="btn-orange w-full drop-shadow-md py-4  hover:-translate-y-0.5  hover:scale-110 hover:drop-shadow-lg md:w-48" 
-    on:click={valid?  alert(tidemanRule(voters).join('\r\n')): false}>
+    <button class="btn-orange w-full drop-shadow-md py-4  hover:-translate-y-0.5 active:scale-100 hover:scale-110 hover:drop-shadow-lg md:w-48" 
+    on:click={valid?  callModal(tidemanRule(voters)): false}>
         Tideman
     </button>
 
     <h3>Social Choice Rules</h3>
 
-    <button class="btn-orange w-full drop-shadow-md py-4  hover:-translate-y-0.5  hover:scale-110 hover:drop-shadow-lg md:w-48" 
-    on:click={valid? alert(skorCRule(voters,bordaSkor).join('\r\n')): false}>
+    <button class="btn-orange w-full drop-shadow-md py-4  hover:-translate-y-0.5 active:scale-100 hover:scale-110 hover:drop-shadow-lg md:w-48" 
+    on:click={valid? callModal(skorCRule(voters,bordaSkor)): false}>
         Borda
     </button>
 
-    <button class="btn-orange w-full drop-shadow-md py-4  hover:-translate-y-0.5  hover:scale-110 hover:drop-shadow-lg md:w-48" 
-    on:click={valid? alert(skorCRule(voters,minMaxSkor).join('\r\n')): false}>
+    <button class="btn-orange w-full drop-shadow-md py-4  hover:-translate-y-0.5 active:scale-100 hover:scale-110 hover:drop-shadow-lg md:w-48" 
+    on:click={valid? callModal(skorCRule(voters,minMaxSkor)): false}>
         Min-Max
     </button>
 
-    <button class="btn-orange w-full drop-shadow-md py-4  hover:-translate-y-0.5  hover:scale-110 hover:drop-shadow-lg md:w-48" 
-    on:click={valid?  alert(skorCRule(voters,copelandSkor).join('\r\n')): false}>
+    <button class="btn-orange w-full drop-shadow-md py-4  hover:-translate-y-0.5 active:scale-100 hover:scale-110 hover:drop-shadow-lg md:w-48" 
+    on:click={valid?  callModal(skorCRule(voters,copelandSkor)): false}>
         Copeland
     </button>
 

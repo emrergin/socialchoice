@@ -39,4 +39,25 @@
     .grid-component{
         @apply grid md:grid-cols-2 gap-2 row-span-2 gap-2.5 p-4 place-items-center;
     }
+            /* https://svelte.dev/repl/033e824fad0a4e34907666e7196caec4?version=3.4.1 */
+    .modal-box{
+        @apply relative w-[40rem] my-8 mx-auto rounded-lg bg-white p-6 overflow-auto;
+    }  
+    .modal-background{
+        @apply flex flex-col fixed w-screen h-screen z-20 top-0 left-0 justify-center bg-black bg-opacity-50;
+    }
+    .close-button{
+        @apply block box-border z-30 absolute top-4 right-4 m-0 p-0 w-6 h-6 border-0 text-orange-500 
+            rounded-3xl bg-orange-100  shadow-md transition-all appearance-none
+            before:content-[''] before:block before:box-border before:absolute 
+            before:top-1/2 before:w-6 before:h-0.5 before:bg-orange-500 before:origin-center before:transition-all
+            after:content-[''] after:block after:box-border after:absolute 
+            after:top-1/2 after:w-6 after:h-0.5 after:bg-orange-500 after:origin-center after:transition-all
+            before:rotate-45 
+            after:-rotate-45  
+            hover:bg-orange-300 hover:scale-110
+            before:hover:h-0.5 after:hover:h-0.5 before:hover:bg-orange-100 after:hover:bg-orange-100
+            focus:border-orange-400 focus:shadow-md focus:shadow-orange-900
+            active:scale-90 active:outline-0 hover:outline-0 focus:outline-0;
+    }
   }
