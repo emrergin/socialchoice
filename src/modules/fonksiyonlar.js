@@ -41,16 +41,12 @@ function tournament(ranks,readytoCalculate=true,returnScores=false){
 		if (zaferSayisi<0){
 			cift=cift.reverse();
 		}
-		// if(zaferSayisi!==0){
 		ciftlerVeSkorlar[cift]=Math.abs(zaferSayisi);					
-		// }
 	}
-	// console.log(ciftlerVeSkorlar);
 	if (returnScores){
 		return ciftlerVeSkorlar;
 	}
 	else{
-		// return Object.getOwnPropertyNames(ciftlerVeSkorlar).map(a=>a.split(`,`));
 		return (Object.getOwnPropertyNames(ciftlerVeSkorlar).filter(a=>ciftlerVeSkorlar[a]!==0).map(a=>a.split(`,`)))
 	}
 }
@@ -126,6 +122,78 @@ function tidemanRule(ranks){
 		}				
 	}
 	return(adaylar);	
+}
+
+function schulzeRule(ranks){
+	let numberOfVoters=ranks.length;
+	ranks=prepareInput(ranks);
+	let ciftlerVeSkorlar = tournament(ranks,true,true);
+	let directPaths={};
+	for (let pairOfPair in ciftlerVeSkorlar){
+		let margin=ciftlerVeSkorlar[pairOfPair];
+		let lesserVotes=(numberOfVoters-margin)/2;
+		let greaterVotes=lesserVotes+margin;
+		directPaths[`${pairOfPair.split(`,`)}`]=greaterVotes;
+		directPaths[`${pairOfPair.split(`,`).reverse()}`]=lesserVotes;
+	}
+	
+	// console.log(directPaths);
+	let pathsObject={};
+	for (let alternative1 of ranks[0]){
+		for (let alternative2 of ranks[0]){
+			if (alternative1!==alternative2){
+				// console.log(directPaths[`${alternative1},${alternative2}`]);
+				if (directPaths[`${alternative1},${alternative2}`]>directPaths[`${alternative2},${alternative1}`]){
+					pathsObject[`${alternative1},${alternative2}`]=directPaths[`${alternative1},${alternative2}`];
+				}
+				else{
+					pathsObject[`${alternative1},${alternative2}`]=0;
+				}
+			}
+		}
+	}
+
+	for (let alternative1 of ranks[0]){
+		for (let alternative2 of ranks[0]){
+			if (alternative1!==alternative2){
+				for (let alternative3 of ranks[0]){
+					if (alternative1!==alternative3 && alternative2!==alternative3){
+						pathsObject[`${alternative2},${alternative3}`]=
+						Math.max(pathsObject[`${alternative2},${alternative3}`],
+							Math.min(pathsObject[`${alternative2},${alternative1}`],
+								pathsObject[`${alternative1},${alternative3}`]
+							)
+							)
+					}
+				}
+			}
+		}
+	}
+	console.log(pathsObject);
+	let pathWins=[];
+	for (let pair in pathsObject){
+		if (pathsObject[pair]>pathsObject[`${pair.split(`,`).reverse()}`]){
+			pathWins.push(pair);
+		}
+	}
+	console.log(pathWins);
+
+	let adaylar=[];
+	const butunRanklar=permutator(ranks[0]);
+
+
+
+	loop1: for (let ruler of butunRanklar){
+		for (let pairsFound of pathWins){	
+			let sepPairs=pairsFound.split(`,`);		
+			if (ruler.indexOf(sepPairs[0])>ruler.indexOf(sepPairs[1])){
+				continue loop1;
+			}			
+		}		
+		adaylar.push(ruler);		
+	}
+	return(adaylar);
+	// console.log(adaylar);
 }
 
 function copelandSkor(ranks){
@@ -216,6 +284,6 @@ function skorCRule(ranks,fonksiyon){
 	return adaylar;
 }
 
+
 export {kemenyRule, bordaSkor,minMaxSkor, skorWRule, skorCRule
-	,slaterRule ,tidemanRule ,copelandSkor
-,tournament};
+	,slaterRule ,tidemanRule , schulzeRule, copelandSkor ,tournament};

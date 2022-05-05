@@ -97,4 +97,17 @@ const tidemanProfile = [
     "Y,Z,W,X"
 ]
 
-export { minMaxProfile, slaterProfile, kemenyProfile, copelandProfile, tidemanProfile };
+const schulzeProfile=
+[
+"A,B,C,D",
+"A,B,C,D",
+"A,B,C,D",
+"D,A,B,C",
+"D,A,B,C",
+"D,B,C,A",
+"D,B,C,A",
+"C,B,D,A",
+"C,B,D,A"
+]
+
+export { minMaxProfile, slaterProfile, kemenyProfile, copelandProfile, tidemanProfile,schulzeProfile };
