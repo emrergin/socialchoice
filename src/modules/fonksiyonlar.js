@@ -41,9 +41,9 @@ function tournament(ranks,readytoCalculate=true,returnScores=false){
 		if (zaferSayisi<0){
 			cift=cift.reverse();
 		}
-		if(zaferSayisi!==0){
-			ciftlerVeSkorlar[cift]=Math.abs(zaferSayisi);					
-		}
+		// if(zaferSayisi!==0){
+		ciftlerVeSkorlar[cift]=Math.abs(zaferSayisi);					
+		// }
 	}
 	// console.log(ciftlerVeSkorlar);
 	if (returnScores){
@@ -51,7 +51,7 @@ function tournament(ranks,readytoCalculate=true,returnScores=false){
 	}
 	else{
 		// return Object.getOwnPropertyNames(ciftlerVeSkorlar).map(a=>a.split(`,`));
-		return (Object.getOwnPropertyNames(ciftlerVeSkorlar).map(a=>a.split(`,`)))
+		return (Object.getOwnPropertyNames(ciftlerVeSkorlar).filter(a=>ciftlerVeSkorlar[a]!==0).map(a=>a.split(`,`)))
 	}
 }
 
@@ -77,7 +77,8 @@ function tidemanRule(ranks){
 	let ciftlerVeSkorlar = tournament(ranks,true,true);
 
 	let allPairs = Object.getOwnPropertyNames(ciftlerVeSkorlar);
-	let allPairsOfPairs=pairs(allPairs);
+	let allPairsOfPairs = pairs(allPairs);
+	console.log(ciftlerVeSkorlar);
 	let allPermutationsOfRanks=permutator(allPairs);
 
 	let probablePermutations=[];
@@ -89,21 +90,20 @@ function tidemanRule(ranks){
 			const skor1=ciftlerVeSkorlar[pairOfPair[0]];
 			const skor2=ciftlerVeSkorlar[pairOfPair[1]];
 					
-			if (((i1>i2)&&(skor1>skor2))||((i1<i2)&&(skor1<skor2))){
+			if ((((i1>i2)&&(skor1>skor2))||((i1<i2)&&(skor1<skor2)))){
 				continue loop1;
-			}			
+			}	
 		}
+			
 		probablePermutations.push(order);		
 	}
 
 	let allListsOfPairs=[];
 
 	for (let probablePermutation of probablePermutations){
-		console.log(probablePermutation);
 		let result=[];
 		for (let pair of probablePermutation){
 			pair=pair.split(`,`);
-			console.log(result)
 			if (!checkIfLastAddedPairBreaksTransitivity(result,pair)){
 				result.push(pair);
 			}
@@ -125,7 +125,6 @@ function tidemanRule(ranks){
 			}			
 		}				
 	}
-
 	return(adaylar);	
 }
 
@@ -144,7 +143,6 @@ function copelandSkor(ranks){
 }
 
 function bordaSkor(ranks){
-	// ranks=prepareInput(ranks);
 	let uzunluk=ranks[0].length;
 	let nObj={};
 	
@@ -176,7 +174,6 @@ function minMaxSkor(ranks){
 	}
 
 	return nObj;
-	// console.log(nObj);
 }
 
 

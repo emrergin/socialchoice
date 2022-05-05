@@ -14,7 +14,7 @@
 </script>
 
 <div class="modal-background">
-    <div class="modal-box [max-height: calc(100vh - 4rem)] flex">
+    <div class="modal-box [max-height: calc(100vh - 4rem)] flex flex-col md:flex-row">
         <div class="close-button" on:click={close}></div>
         <!-- {message} -->
 
@@ -27,7 +27,7 @@
         {#if message.length>1 }
         <div class="text-center mt-4">
             <p>The result is irresolute. Shall we tie break randomly?</p>
-            <button class="btn-orange drop-shadow-md py-2 mt-4
+            <button class="btn-orange drop-shadow-md py-2 mt-4 w-1/2
             hover:-translate-y-0.5 active:scale-100 hover:scale-110 hover:drop-shadow-lg md:w-48"
             on:click={randomize}
             >Yes</button>

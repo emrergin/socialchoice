@@ -2,8 +2,9 @@
     import { onMount } from 'svelte';
     import { kemenyRule,skorWRule,bordaSkor,minMaxSkor, skorCRule
     ,slaterRule, tidemanRule ,copelandSkor ,tournament} from '../modules/fonksiyonlar';
+    import { minMaxProfile, slaterProfile, kemenyProfile, copelandProfile, tidemanProfile } from '../modules/exampleProfiles';
     import { isPermutationArray } from '../modules/social_tools';
-    import { fade, fly } from 'svelte/transition';
+    // import { fade, fly } from 'svelte/transition';
     import Modal from './Modal.svelte'
 
     let ornek =``;
@@ -14,11 +15,14 @@
     let modalMessage=``;
 
 	onMount(()=>{
-        voters=
+        voters= 
+        // slaterProfile;
+        // tidemanProfile;
         [
             "Alastair,Brian,Chris",
             "Chris,Brian,Alastair",
-            "Chris,Brian,Alastair"
+            "Chris,Brian,Alastair",
+            "Brian,Alastair,Chris"
         ];
         
         ornek = voters.join("\n");
@@ -44,6 +48,7 @@
         if (voters[voters.length-1]===``){
             voters[voters.length-1]=`${event.target.textContent}`
             ornek = voters.join("\n"); 
+            checkValidity(voters); 
             return false;
         }
         let geriyeKalanSayisi=voters[0].split(`,`).length-voters[voters.length-1].split(`,`).length;
@@ -53,7 +58,8 @@
         else{
             voters[voters.length-1]+=`,${event.target.textContent}`
         }      
-        ornek = voters.join("\n");  
+        ornek = voters.join("\n"); 
+        checkValidity(voters); 
         auto_grow(document.getElementById(`votesInput`));
     }
 

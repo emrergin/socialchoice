@@ -37,7 +37,7 @@
       transition-all duration-300 hover:bg-orange-400 hover:text-orange-50 hover:font-bold;
     }
     .grid-component{
-        @apply grid md:grid-cols-2 gap-2 row-span-2 gap-2.5 p-4 place-items-center;
+        @apply grid md:grid-cols-2 gap-2 row-span-2 gap-2.5 p-4 place-items-center mb-4;
     }
             /* https://svelte.dev/repl/033e824fad0a4e34907666e7196caec4?version=3.4.1 */
     .modal-box{
