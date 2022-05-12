@@ -5,36 +5,31 @@
 
 @layer base{
     h3{
-        @apply col-span-2 text-2xl font-bold mb-3.5 mt-3.5;
+        @apply col-span-2 text-2xl font-bold mb-3.5 mt-3.5 text-sky-900;
     }
 
     footer{
-        @apply flex fixed h-14 px-4 inset-x-0 bottom-0 justify-center items-center bg-orange-100 w-full md:h-8 md:px-0 z-10 text-center;
+        @apply flex fixed h-14 px-4 inset-x-0 bottom-0 justify-center items-center bg-orange-100 w-full md:h-8 md:px-0 z-10 text-center
+        border-t-2 border-orange-200;
     }
 
     a{
-        @apply underline decoration-2 decoration-pink-500 font-bold transition-all duration-300 hover:text-lg hover:text-cyan-600;
+        @apply underline decoration-2 decoration-pink-500 font-bold transition-all duration-300 hover:text-lg hover:text-sky-500;
     }
 
+    strong,p{
+        @apply text-sky-900 font-semibold;
+    }
 
-
-    /* position:fixed;
-    bottom:0;
-    left:0px;
-    right:0px;
-    background-color: #ffedd5;
-    width:100vw;
-    height:4vh;
-    display: flex;
-    align-items: center;
-    justify-content:center;
-    z-index: 10; */
+    li{
+        @apply text-sky-900;
+    }
 }
 
 @layer components {
     .btn-orange {
-      @apply  bg-orange-100 border-2 text-orange-500 rounded-full
-      transition-all duration-300 hover:bg-orange-400 hover:text-orange-50 hover:font-bold;
+      @apply  bg-orange-100 border-2 text-sky-700 rounded-full border-orange-200 border-b-orange-300
+      transition-all duration-300 hover:bg-sky-400 hover:text-orange-50 hover:font-bold hover:border-sky-200;
     }
     .grid-component{
         @apply grid md:grid-cols-2 gap-2 row-span-2 gap-2.5 p-4 place-items-center mb-4;
