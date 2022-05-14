@@ -5,7 +5,7 @@
 
 @layer base{
     h3{
-        @apply col-span-2 text-2xl font-bold mb-3.5 mt-3.5 text-sky-900;
+        @apply col-span-2 text-2xl font-bold mb-3.5 mt-3.5 text-blue-900;
     }
 
     footer{
@@ -14,22 +14,22 @@
     }
 
     a{
-        @apply underline decoration-2 decoration-pink-500 font-bold transition-all duration-300 hover:text-lg hover:text-sky-500;
+        @apply  font-bold transition-all text-blue-700 duration-300 hover:text-lg hover:text-blue-500;
     }
-
+    /* underline decoration-2 decoration-pink-500 */
     strong,p{
-        @apply text-sky-900 font-semibold;
+        @apply text-blue-900 font-semibold;
     }
 
     li{
-        @apply text-sky-900;
+        @apply text-blue-900;
     }
 }
 
 @layer components {
     .btn-orange {
-      @apply  bg-orange-100 border-2 text-sky-700 rounded-full border-orange-200 border-b-orange-300
-      transition-all duration-300 hover:bg-sky-400 hover:text-orange-50 hover:font-bold hover:border-sky-200;
+      @apply  bg-orange-50 border-2 border-t-4 text-blue-700 rounded-full border-orange-100 border-b-orange-200
+      transition-all duration-300 hover:bg-blue-400 hover:text-orange-50 hover:font-bold hover:border-blue-200;
     }
     .grid-component{
         @apply grid md:grid-cols-2 gap-2 row-span-2 gap-2.5 p-4 place-items-center mb-4;

@@ -3,7 +3,7 @@
   import Footer from './lib/Footer.svelte'
 </script>
 
-<div id="everything" class="min-h-screen min-w-screen bg-gradient-to-t from-sky-200 to-zinc-200">
+<div id="everything" class="min-h-screen min-w-screen bg-gradient-to-tr from-teal-50 to-zinc-200">
   <main class="grid-component font-sans"> 
 
     <Input />

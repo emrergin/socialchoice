@@ -86,7 +86,7 @@
 <p class="text-center">Please enter ranked votes for each alternative, separated by comma.</p>
 <p class="text-center">Each row must include the same alternatives.</p>
 <textarea value={ornek} id="votesInput"
-    class="{valid ? 'border-8 border-sky-500' : 'border-8 border-red-500'} 
+    class="{valid ? 'border-8 border-blue-300' : 'border-8 border-red-500'} 
     resize-none justify-self-center w-11/12 overflow-auto box-content rounded-md
     shadow-none outline-none
     md:w-96"  
