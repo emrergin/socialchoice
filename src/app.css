@@ -28,8 +28,11 @@
 
 @layer components {
     .btn-orange {
-      @apply  bg-orange-50 border-2 border-t-4 text-blue-700 rounded-full border-orange-100 border-b-orange-200
-      transition-all duration-300 hover:bg-blue-400 hover:text-orange-50 hover:font-bold hover:border-blue-200;
+      @apply  border-2 border-t-4 text-blue-700 rounded-full border-orange-100 border-b-orange-200 bg-orange-50
+      transition-all duration-300       
+      hover:text-orange-50 hover:font-bold hover:bg-gradient-to-br hover:from-blue-400 hover:to-teal-400 hover:border-blue-400 hover:border-b-blue-500
+      hover:outline-8 hover:outline-blue-400 hover:outline-offset-4
+      hover:shadow hover:shadow-blue-400;
     }
     .grid-component{
         @apply grid md:grid-cols-2 gap-2 row-span-2 gap-2.5 p-4 place-items-center mb-4;

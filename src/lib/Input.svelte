@@ -1,6 +1,6 @@
 <script>
     import { onMount } from 'svelte';
-    import { kemenyRule,skorWRule,bordaSkor,minMaxSkor, skorCRule
+    import { kemenyRule,skorWRule,bordaSkor,minMaxSkor, skorCRule, dodgsonSkorumsu
     ,slaterRule, tidemanRule , schulzeRule, copelandSkor ,tournament} from '../modules/fonksiyonlar';
     import { minMaxProfile, slaterProfile, kemenyProfile, copelandProfile,
         tidemanProfile, schulzeProfile } from '../modules/exampleProfiles';
@@ -26,6 +26,10 @@
         //     "Brian,Alastair,Chris"
         // ];
         schulzeProfile;
+        // [
+        //     "A,B,C",
+        //     "A,B,C"
+        // ];
         
         ornek = voters.join("\n");
         auto_grow(document.getElementById(`votesInput`));
@@ -164,6 +168,12 @@ class="grid-component md:col-start-2 self-start md:row-start-1">
         Schulze
     </button>
 
+
+    <button class="btn-orange w-full drop-shadow-md py-4  hover:-translate-y-0.5 active:scale-100 hover:scale-110 hover:drop-shadow-lg md:w-48" 
+    on:click={valid?  callModal(skorWRule(voters,dodgsonSkorumsu)): false}>
+        Dodgson
+    </button>
+
     <h3>Social Choice Rules</h3>
 
     <button class="btn-orange w-full drop-shadow-md py-4  hover:-translate-y-0.5 active:scale-100 hover:scale-110 hover:drop-shadow-lg md:w-48" 
@@ -179,6 +189,11 @@ class="grid-component md:col-start-2 self-start md:row-start-1">
     <button class="btn-orange w-full drop-shadow-md py-4  hover:-translate-y-0.5 active:scale-100 hover:scale-110 hover:drop-shadow-lg md:w-48" 
     on:click={valid?  callModal(skorCRule(voters,copelandSkor)): false}>
         Copeland
+    </button>
+
+    <button class="btn-orange w-full drop-shadow-md py-4  hover:-translate-y-0.5 active:scale-100 hover:scale-110 hover:drop-shadow-lg md:w-48" 
+    on:click={valid?  callModal(skorCRule(voters,dodgsonSkorumsu,true)): false}>
+        Dodgson
     </button>
 
 

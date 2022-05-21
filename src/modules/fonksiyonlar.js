@@ -137,12 +137,10 @@ function schulzeRule(ranks){
 		directPaths[`${pairOfPair.split(`,`).reverse()}`]=lesserVotes;
 	}
 	
-	// console.log(directPaths);
 	let pathsObject={};
 	for (let alternative1 of ranks[0]){
 		for (let alternative2 of ranks[0]){
 			if (alternative1!==alternative2){
-				// console.log(directPaths[`${alternative1},${alternative2}`]);
 				if (directPaths[`${alternative1},${alternative2}`]>directPaths[`${alternative2},${alternative1}`]){
 					pathsObject[`${alternative1},${alternative2}`]=directPaths[`${alternative1},${alternative2}`];
 				}
@@ -181,8 +179,6 @@ function schulzeRule(ranks){
 	let adaylar=[];
 	const butunRanklar=permutator(ranks[0]);
 
-
-
 	loop1: for (let ruler of butunRanklar){
 		for (let pairsFound of pathWins){	
 			let sepPairs=pairsFound.split(`,`);		
@@ -193,7 +189,94 @@ function schulzeRule(ranks){
 		adaylar.push(ruler);		
 	}
 	return(adaylar);
-	// console.log(adaylar);
+}
+
+function dodgsonSkorumsu(ranks,onlyFirst=false){
+	//named as such since does not return the accurate score for the last alternative.
+	let deepness=0;
+	let queue=[ranks];
+	let queue2=[];
+	let output={};
+	let alreadyChecked=[convertProfileToString(ranks)];
+	let m=ranks[0].length;
+	let n=ranks.length;
+	let limit= onlyFirst? 1:m-1;
+
+	loop1: while(Object.keys(output).length<m){
+
+		for (let profile of queue){
+			if (condorcetWinner(profile)){
+				if (!(condorcetWinner(profile) in output))
+				{
+					output[condorcetWinner(profile)]=deepness;
+				}
+			}
+			if (Object.keys(output).length>=m){
+				break loop1;
+			}
+		}
+
+		deepness++;
+		queue2=[];
+
+		if (Object.keys(output).length=== limit){
+			for (let j = 0; j < m; j++) {
+				if (!(ranks[0][j] in output))
+				{
+					output[ranks[0][j]]=deepness;
+				}
+			}
+			break loop1;
+		}		
+
+		for (let pro of queue){				
+			let yakindakiler = swapFinder(pro);
+			for (let eachSwap of yakindakiler){
+				let deneme=eachSwap.map(a=>a.join(`,`));
+				deneme=deneme.sort().toString();
+				if (!(alreadyChecked.includes(deneme))){
+					queue2.push(eachSwap);
+					alreadyChecked.push(convertProfileToString(eachSwap));
+				}
+			}
+		}
+		queue=queue2;
+	}
+
+	for (let key in output) {
+		output[key] *= -1;
+	}
+
+	return output;
+
+	function condorcetWinner(ranks){
+		let result = tournament(ranks).map(a=>a[0]).reduce(function (acc, curr) {
+			return acc[curr] ? ++acc[curr] : acc[curr] = 1, acc
+		  }, {});
+		result = Object.entries(result).filter(a=>a[1]===ranks[0].length-1);		
+		if (result.length) {return(result[0][0]);}
+		else{return null;}	
+	}
+	function swapFinder(voters){
+		let result=[];
+		for (let i = 0; i < n; i++) {
+			for (let j = 0; j < m-1; j++) {
+				let swappedProfile = structuredClone(voters);
+				let newVoter=structuredClone(voters[i]);
+				newVoter[j]=voters[i][j+1];
+				newVoter[j+1]=voters[i][j];
+				swappedProfile[i]=newVoter;
+				result.push(swappedProfile);
+			}
+		}	
+		return result;
+	}
+
+	function convertProfileToString(voters){
+		let kayit=voters.map(a=>a.join(`,`));
+		kayit=kayit.sort().toString();
+		return kayit;
+	}
 }
 
 function copelandSkor(ranks){
@@ -285,5 +368,5 @@ function skorCRule(ranks,fonksiyon){
 }
 
 
-export {kemenyRule, bordaSkor,minMaxSkor, skorWRule, skorCRule
+export {kemenyRule, bordaSkor,minMaxSkor, dodgsonSkorumsu, skorWRule, skorCRule
 	,slaterRule ,tidemanRule , schulzeRule, copelandSkor ,tournament};

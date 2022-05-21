@@ -41,7 +41,7 @@ function isPermutationArray(inputArray){
     return false;
   }
 
-  for (let i = inputArray.length-1; i > 1; i--) {
+  for (let i = inputArray.length-1; i >= 1; i--) {
     if (!isPermutation(inputArray[0],inputArray[i])){
       return false;
     }
