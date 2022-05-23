@@ -22,9 +22,7 @@
                 })
             }        
             var ctx = document.getElementById('canvas').getContext('2d');
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);            
             
             ctx.strokeStyle=`#ea580c`;
             ctx.lineWidth = 2;
@@ -83,5 +81,5 @@
 </script>
 
 
-<canvas  width="400" height="400" class="bg-orange-50 mb-4 border-2 border-blue-400 rounded" id="canvas">
+<canvas  width="400" height="400" class="bg-orange-50 mb-4 border-2 border-blue-400 rounded w-11/12 md:w-96" id="canvas">
 </canvas>
