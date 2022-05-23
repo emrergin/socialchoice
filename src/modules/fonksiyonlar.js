@@ -167,14 +167,13 @@ function schulzeRule(ranks){
 			}
 		}
 	}
-	console.log(pathsObject);
+
 	let pathWins=[];
 	for (let pair in pathsObject){
 		if (pathsObject[pair]>pathsObject[`${pair.split(`,`).reverse()}`]){
 			pathWins.push(pair);
 		}
 	}
-	console.log(pathWins);
 
 	let adaylar=[];
 	const butunRanklar=permutator(ranks[0]);
@@ -192,7 +191,7 @@ function schulzeRule(ranks){
 }
 
 function dodgsonSkorumsu(ranks,onlyFirst=false){
-	//named as such since does not return the accurate score for the last alternative.
+	//named as such since does not return the accurate score for the last alternative(s).
 	let deepness=0;
 	let queue=[ranks];
 	let queue2=[];
@@ -203,6 +202,9 @@ function dodgsonSkorumsu(ranks,onlyFirst=false){
 	let limit= onlyFirst? 1:m-1;
 
 	loop1: while(Object.keys(output).length<m){
+		if (queue.length>1000){
+			return (`This specific profile is too complex for Dodgson. Try other rules.`);
+		}
 
 		for (let profile of queue){
 			if (condorcetWinner(profile)){
@@ -330,7 +332,10 @@ function minMaxSkor(ranks){
 
 function skorWRule(ranks,fonksiyon){
 	ranks=prepareInput(ranks);	
-	const nObj=fonksiyon(ranks);	
+	const nObj=fonksiyon(ranks);
+	if (typeof nObj === "string")	{
+		return [nObj];
+	}
 
 	let adaylar=[];
 	const butunRanklar=permutator(ranks[0]);
@@ -354,6 +359,9 @@ function skorWRule(ranks,fonksiyon){
 function skorCRule(ranks,fonksiyon){
 	ranks=prepareInput(ranks);	
 	const nObj=fonksiyon(ranks);
+	if (typeof nObj === "string")	{
+		return [nObj];
+	}
 	let adaylar=[];
 
 	let arr = Object.values(nObj);

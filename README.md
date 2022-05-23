@@ -15,6 +15,7 @@ Will update with more and more voting systems in the future, including another c
 - Nurmi, H. (2014). Are we done with preference rankings? if we are, then what? Operations Research and Decisions 24(4), 63–74.
 - de Borda, J. C. (1781). Mémoire sur les élections au scrutin. Histoire de l'Academie Royale des Sciences, Paris.
 - Young, H. P. and A. Levenglick (1978). A consistent extension of condorcets election principle. SIAM Journal on applied Mathematics 35(2), 285–300.
+- Dodgson, C. (1876). A method of taking votes on more than two issues. The theory of committees and elections.
 
 
 ### What I learned

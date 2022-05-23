@@ -1,12 +1,13 @@
 <script>
     import { onMount } from 'svelte';
-    import { kemenyRule,skorWRule,bordaSkor,minMaxSkor, skorCRule, dodgsonSkorumsu
-    ,slaterRule, tidemanRule , schulzeRule, copelandSkor ,tournament} from '../modules/fonksiyonlar';
+    import { kemenyRule,skorWRule,bordaSkor,minMaxSkor, skorCRule, dodgsonSkorumsu, tournament
+    ,slaterRule, tidemanRule , schulzeRule, copelandSkor } from '../modules/fonksiyonlar';
     import { minMaxProfile, slaterProfile, kemenyProfile, copelandProfile,
-        tidemanProfile, schulzeProfile } from '../modules/exampleProfiles';
+        tidemanProfile, schulzeProfile,dodgsonProfile } from '../modules/exampleProfiles';
     import { isPermutationArray } from '../modules/social_tools';
     // import { fade, fly } from 'svelte/transition';
     import Modal from './Modal.svelte'
+    import Tournament from './Tournament.svelte'
 
     let ornek =``;
     let voters=[``];
@@ -14,18 +15,20 @@
     let adaylar=``;
     let modal=false;
     let modalMessage=``;
+    let tournamentResult={};
 
 	onMount(()=>{
         voters= 
         // slaterProfile;
         // tidemanProfile;
-        // [
-        //     "Alastair,Brian,Chris",
-        //     "Chris,Brian,Alastair",
-        //     "Chris,Brian,Alastair",
-        //     "Brian,Alastair,Chris"
-        // ];
-        schulzeProfile;
+        [
+            "Alastair,Brian,Chris",
+            "Chris,Brian,Alastair",
+            "Chris,Brian,Alastair",
+            "Brian,Alastair,Chris"
+        ];
+        // schulzeProfile;
+        // dodgsonProfile;
         // [
         //     "A,B,C",
         //     "A,B,C"
@@ -33,12 +36,21 @@
         
         ornek = voters.join("\n");
         auto_grow(document.getElementById(`votesInput`));
+        tournamentResult=tournament(voters,false,true);
+        // console.log(tournamentResult);
     }
     );
 
 
     $: {adaylar=voters[0].split(`,`).sort();
         if (adaylar[0]===``){adaylar.shift();}
+        let turRes=tournament(voters,false,true);
+        tournamentResult = Object.keys(turRes)
+            .filter(key => turRes[key]>0)
+            .reduce((obj, key) => {
+                obj[key] = turRes[key];
+                return obj;
+            }, {});
     }
   
 
@@ -83,6 +95,7 @@
     }
 
 </script>
+
 {#if modal }
     <Modal message={modalMessage} on:close={closeModel}/>
 {/if}
@@ -121,12 +134,7 @@
             {adaylar}
         {/if}
     </p>
-    <h3 class="hidden md:block"> Votes</h3>
-    <ul class="hidden md:block">
-        {#each voters as voter}
-            <li>{voter.replace(/,/g,` > `)}</li>
-        {/each}
-    </ul>
+    <Tournament tournamentData={tournamentResult}/>
 </div>    
 
 
@@ -195,12 +203,6 @@ class="grid-component md:col-start-2 self-start md:row-start-1">
     on:click={valid?  callModal(skorCRule(voters,dodgsonSkorumsu,true)): false}>
         Dodgson
     </button>
-
-
-
-    <!-- <button on:click={tournament(voters,false)}>
-        Tournament
-    </button> -->
 
 
 

@@ -110,4 +110,20 @@ const schulzeProfile=
 "C,B,D,A"
 ]
 
-export { minMaxProfile, slaterProfile, kemenyProfile, copelandProfile, tidemanProfile,schulzeProfile };
+const dodgsonProfile=
+[
+    "D,C,A,B",
+    "D,C,A,B",
+    "B,C,A,D",
+    "B,C,A,D",
+    "C,A,B,D",
+    "C,A,B,D",
+    "D,B,C,A",
+    "D,B,C,A",
+    "A,B,C,D",
+    "A,B,C,D",
+    "A,D,B,C",
+    "D,A,B,C"
+]
+
+export { minMaxProfile, slaterProfile, kemenyProfile, copelandProfile, tidemanProfile,schulzeProfile,dodgsonProfile };
