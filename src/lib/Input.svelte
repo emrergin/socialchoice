@@ -63,28 +63,26 @@
     }
 
     function adayDugme(){
-        // voters=ornek.split(`\n`);
-        // voters[voters.length-1]= voters[voters.length-1].replace(/,\s*$/, "");
-        console.log(voters);
-        if (voters[voters.length-1]===``){
-            voters[voters.length-1]=`${event.target.textContent}`
-            ornek = voters.join("\n"); 
-            checkValidity(voters); 
-            console.log(`aa`);
-            return false;
-        }
-        let geriyeKalanSayisi=voters[0].split(`,`).length-voters[voters.length-1].split(`,`).length;
-        if(geriyeKalanSayisi===0){
-            voters=[...voters, event.target.textContent];
-            console.log(`if`);
+        if (ornek.split(`\n`)[ornek.split(`\n`).length-1].length<ornek.split(`\n`)[ornek.split(`\n`).length-2].length){
+            if (ornek.split(`\n`)[ornek.split(`\n`).length-1].length===0){
+                ornek+= event.target.textContent;
+            }
+            else{
+                ornek+= `,`+event.target.textContent;
+            }
         }
         else{
-            voters[voters.length-1]+=`,${event.target.textContent}`
-            console.log(`else`);
-        }      
-        ornek = voters.join("\n"); 
-        checkValidity(voters); 
+            ornek+= `\n` +event.target.textContent;
+        }
+
         auto_grow(document.getElementById(`votesInput`));
+
+        let oncekiDeger=voters;
+        voters=ornek.replace(/  +/ig, ' ').replace(/(\t| )*,(\t| )*/ig, ',').split(`\n`).map(a=>a.trim());
+        checkValidity(voters);
+        if (!valid){
+            voters= oncekiDeger;
+        }
     }
 
     function checkValidity(array){
@@ -129,15 +127,14 @@
 </div>
 <div id="output" class="flex flex-col justify-center items-center px-4 gap-4">
     <p><b>Candidates</b>: 
-        {#if (voters.length>1 || (ornek.endsWith(`\n`))) }
+        {#if (ornek.split(`\n`).length>1) }
             {#each adaylar as aday}
                     <button class="kucukDugme btn-orange px-1 py-1 disabled:invisible" 
                     disabled={
-                        (voters[voters.length-1].includes(aday+`,`)||
-                        voters[voters.length-1].includes(`,`+aday))
+                        ornek.split(`\n`)[ornek.split(`\n`).length-1].split(`,`).includes(aday)
                         &&
                         voters[0].split(`,`).length!==                    
-                        voters[voters.length-1].split(`,`).length
+                        ornek.split(`\n`)[ornek.split(`\n`).length-1].split(`,`).length
                     }
                     on:click={adayDugme}
                     >{aday}</button>
