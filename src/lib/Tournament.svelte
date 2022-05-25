@@ -60,7 +60,8 @@
                 ctx.fill();
 
                 //Write tournament margins.
-                ctx.fillStyle = "#2563eb";
+                ctx.fillStyle = `rgba(37, 99, 235,${tournamentData[data]/Math.max(...Object.values(tournamentData))})`;
+
                 ctx.fillText(tournamentData[data],(3*x1+2*x2)/5, (2*y1+3*y2)/5);
 
             }   
