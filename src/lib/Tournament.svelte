@@ -8,6 +8,7 @@
     let centerX=200;
     let centerY=200;
     let headlen=20;
+    // let maxMargin=1;
 
     function draw(candidates) {
         if (document.getElementById(`canvas`)){
@@ -24,7 +25,7 @@
             var ctx = document.getElementById('canvas').getContext('2d');
             ctx.clearRect(0, 0, canvas.width, canvas.height);            
             
-            ctx.strokeStyle=`#ea580c`;
+            
             ctx.lineWidth = 2;
             ctx.font = '24px sans-serif'; 
             for (let data in tournamentData){
@@ -39,9 +40,11 @@
                 let y2=(bitisAlternative.loc_y*12+y1)/13;
                 let rot = Math.atan2(y2-y1,x2-x1);                
 
+                
                 ctx.beginPath();
                 ctx.moveTo(x1, y1);
                 ctx.lineTo(x2, y2);
+                ctx.strokeStyle=`rgba(234, 88, 12,${tournamentData[data]/Math.max(...Object.values(tournamentData))})`;
                 ctx.stroke();
                 //Draw tournament arrows.
                 ctx.moveTo(x2, y2);
