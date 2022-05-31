@@ -36,14 +36,6 @@
         
         ornek = voters.join("\n");
         auto_grow(document.getElementById(`votesInput`));
-        tournamentResult=tournament(voters,false,true);
-        // console.log(tournamentResult);
-    }
-    );
-
-
-    $: {adaylar=voters[0].split(`,`).sort();
-        if (adaylar[0]===``){adaylar.shift();}
         let turRes=tournament(voters,false,true);
         tournamentResult = Object.keys(turRes)
             .filter(key => turRes[key]>0)
@@ -51,6 +43,22 @@
                 obj[key] = turRes[key];
                 return obj;
             }, {});
+        // console.log(tournamentResult);
+    }
+    );
+
+
+    $: {adaylar=voters[0].split(`,`).sort();
+        if (adaylar[0]===``){adaylar.shift();}
+        if (valid){
+            let turRes=tournament(voters,false,true);
+            tournamentResult = Object.keys(turRes)
+            .filter(key => turRes[key]>0)
+            .reduce((obj, key) => {
+                obj[key] = turRes[key];
+                return obj;
+            }, {});
+        }
     }
   
 

@@ -23,59 +23,84 @@
                 })
             }        
             var ctx = document.getElementById('canvas').getContext('2d');
-            ctx.clearRect(0, 0, canvas.width, canvas.height);            
-            
-            
-            ctx.lineWidth = 2;
-            ctx.font = '24px sans-serif'; 
-            for (let data in tournamentData){
-                //Draw tournament lines.
-                let baslangicNoktasi=data.split(`,`)[0];
-                let bitisNoktasi=data.split(`,`)[1];
-                let baslangicAlternative = candidateLocations.filter(a=>a.name===baslangicNoktasi)[0];
-                let bitisAlternative = candidateLocations.filter(a=>a.name===bitisNoktasi)[0];
-                let x1=baslangicAlternative.loc_x;
-                let y1=baslangicAlternative.loc_y;
-                let x2=(bitisAlternative.loc_x*12+x1)/13;
-                let y2=(bitisAlternative.loc_y*12+y1)/13;
-                let rot = Math.atan2(y2-y1,x2-x1);                
+            ctx.clearRect(0, 0, canvas.width, canvas.height); 
 
-                
-                ctx.beginPath();
-                ctx.moveTo(x1, y1);
-                ctx.lineTo(x2, y2);
-                ctx.strokeStyle=`rgba(234, 88, 12,${tournamentData[data]/Math.max(...Object.values(tournamentData))})`;
-                ctx.stroke();
-                //Draw tournament arrows.
-                ctx.moveTo(x2, y2);
-                ctx.lineTo(x2-headlen*Math.cos(rot-Math.PI/7),y2-headlen*Math.sin(rot-Math.PI/7));            
-                //path from the side point of the arrow, to the other side point
-                ctx.lineTo(x2-headlen*Math.cos(rot+Math.PI/7),y2-headlen*Math.sin(rot+Math.PI/7));            
-                //path from the side point back to the tip of the arrow, and then again to the opposite side point
-                ctx.lineTo(x2, y2);
-                ctx.lineTo(x2-headlen*Math.cos(rot-Math.PI/7),y2-headlen*Math.sin(rot-Math.PI/7));
-                ctx.closePath();
-                ctx.stroke();
-                ctx.fillStyle = "#93c5fd";
-                ctx.fill();
+            ctx.globalCompositeOperation = 'destination-over';         
 
-                //Write tournament margins.
-                ctx.fillStyle = `rgba(37, 99, 235,${tournamentData[data]/Math.max(...Object.values(tournamentData))})`;
+            let candidatePoints={locations:candidateLocations, context:ctx,pointPercentage:0,pointPercentage2:0}
+            drawPoints(candidatePoints);                     
+        }                  
+    }
 
-                ctx.fillText(tournamentData[data],(3*x1+2*x2)/5, (2*y1+3*y2)/5);
+    function drawPoints(points){
 
-            }   
-            
-            //Write alternative names.
-            ctx.font = `40px sans-serif`;  
-            ctx.fillStyle = "#2563eb";
-            ctx.textBaseline = 'middle';
-            ctx.textAlign="center";     
-            for (let i = 0; i < candidates.length; i++) {
-                ctx.fillText(candidateLocations[i].name, candidateLocations[i].loc_x, candidateLocations[i].loc_y,50);
-            }
+        points.context.clearRect(0, 0, canvas.width, canvas.height); 
+        points.context.font = `40px sans-serif`;  
+        
+        points.context.textBaseline = 'middle';
+        points.context.textAlign="center";    
+
+        for (let i = 0; i < points.pointPercentage/20; i++) {
+            points.context.fillStyle = `rgba(37, 99, 235,${(points.pointPercentage-(i*20))/(i+1)})`;
+            points.context.fillText(points.locations[i].name, points.locations[i].loc_x, points.locations[i].loc_y,50);
         }
-                  
+        if (points.pointPercentage<points.locations.length*20){
+            requestAnimationFrame(function () {
+                drawPoints(points);
+                    });
+            points.pointPercentage++;
+        }
+        else{
+            drawArrows(points);
+        }
+    }
+
+    function drawArrows(points){
+
+        points.context.lineWidth = 2;
+        points.context.font = '24px sans-serif'; 
+        for (let data in tournamentData){
+
+            let baslangicNoktasi=data.split(`,`)[0];
+            let bitisNoktasi=data.split(`,`)[1];
+            let baslangicAlternative = points.locations.filter(a=>a.name===baslangicNoktasi)[0];
+            let bitisAlternative = points.locations.filter(a=>a.name===bitisNoktasi)[0];
+            let x1=baslangicAlternative.loc_x;
+            let y1=baslangicAlternative.loc_y;            
+            let x2=(bitisAlternative.loc_x*points.pointPercentage2/100)+x1*(1-points.pointPercentage2/100);
+            let y2=(bitisAlternative.loc_y*points.pointPercentage2/100)+y1*(1-points.pointPercentage2/100);
+            let rot = Math.atan2(y2-y1,x2-x1);            
+            
+            //Write tournament margins.
+            points.context.fillStyle = `rgba(37, 99, 235,${tournamentData[data]/Math.max(...Object.values(tournamentData))})`;
+            points.context.fillText(tournamentData[data],(3*x1+2*x2)/5, (2*y1+3*y2)/5);
+
+            //Draw tournament lines.            
+            points.context.beginPath();
+            points.context.moveTo(x1, y1);
+            points.context.lineTo(x2, y2);
+            points.context.strokeStyle=`rgba(234, 88, 12,${tournamentData[data]/Math.max(...Object.values(tournamentData))})`;
+            points.context.stroke();
+            //Draw tournament arrows.
+            points.context.moveTo(x2, y2);
+            points.context.lineTo(x2-headlen*Math.cos(rot-Math.PI/7),y2-headlen*Math.sin(rot-Math.PI/7));            
+            //path from the side point of the arrow, to the other side point
+            points.context.lineTo(x2-headlen*Math.cos(rot+Math.PI/7),y2-headlen*Math.sin(rot+Math.PI/7));            
+            //path from the side point back to the tip of the arrow, and then again to the opposite side point
+            points.context.lineTo(x2, y2);
+            points.context.lineTo(x2-headlen*Math.cos(rot-Math.PI/7),y2-headlen*Math.sin(rot-Math.PI/7));
+            points.context.closePath();
+            points.context.stroke();
+            points.context.fillStyle = "#93c5fd";
+            points.context.fill();
+
+            if (points.pointPercentage2<95){
+            requestAnimationFrame(function () {
+                drawPoints(points);
+                });
+                points.pointPercentage2+=0.5;
+            }
+        }   
     }
 
     $: {
