@@ -8,7 +8,6 @@
     let centerX=200;
     let centerY=200;
     let headlen=20;
-    // let maxMargin=1;
 
     function draw(candidates) {
         if (document.getElementById(`canvas`)){
@@ -52,6 +51,7 @@
         }
         else{
             drawArrows(points);
+            // console.log(points.pointPercentage,points.pointPercentage2);
         }
     }
 
@@ -93,14 +93,13 @@
             points.context.stroke();
             points.context.fillStyle = "#93c5fd";
             points.context.fill();
-
-            if (points.pointPercentage2<95){
+        }   
+        if (points.pointPercentage2<95){
             requestAnimationFrame(function () {
                 drawPoints(points);
                 });
-                points.pointPercentage2+=0.5;
-            }
-        }   
+                points.pointPercentage2++;
+        }
     }
 
     $: {
