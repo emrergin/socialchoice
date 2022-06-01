@@ -122,7 +122,7 @@
 </script>
 
 {#if modal }
-    <Modal message={modalMessage} on:close={closeModel} isTurkish/>
+    <Modal message={modalMessage} on:close={closeModel} isTurkish={isTurkish}/>
 {/if}
 <div id="input" class="flex flex-col justify-center items-center px-4 gap-4">
 {#if !isTurkish }
