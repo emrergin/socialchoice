@@ -9,6 +9,8 @@
     import Modal from './Modal.svelte'
     import Tournament from './Tournament.svelte'
 
+    export let isTurkish= false;
+
     let ornek =``;
     let voters=[``];
     let valid=true;
@@ -16,6 +18,8 @@
     let modal=false;
     let modalMessage=``;
     let tournamentResult={};
+
+
 
 	onMount(()=>{
         voters= 
@@ -34,6 +38,16 @@
         //     "A,B,C"
         // ];
         
+        if (isTurkish){
+            voters=
+            [
+                "Erdoğan,İmamoğlu,Yavaş",
+                "Yavaş,İmamoğlu,Erdoğan",
+                "Yavaş,İmamoğlu,Erdoğan",
+                "İmamoğlu,Erdoğan,Yavaş"
+            ];
+        }           
+        
         ornek = voters.join("\n");
         auto_grow(document.getElementById(`votesInput`));
         let turRes=tournament(voters,false,true);
@@ -43,7 +57,6 @@
                 obj[key] = turRes[key];
                 return obj;
             }, {});
-        // console.log(tournamentResult);
     }
     );
 
@@ -109,11 +122,16 @@
 </script>
 
 {#if modal }
-    <Modal message={modalMessage} on:close={closeModel}/>
+    <Modal message={modalMessage} on:close={closeModel} isTurkish/>
 {/if}
 <div id="input" class="flex flex-col justify-center items-center px-4 gap-4">
-<p class="text-center">Please enter ranked votes for each alternative, separated by comma.</p>
-<p class="text-center">Each row must include the same alternatives.</p>
+{#if !isTurkish }
+    <p class="text-center">Please enter ranked votes for each alternative, separated by comma.</p>
+    <p class="text-center">Each row must include the same alternatives.</p>
+{:else}
+    <p class="text-center">Lütfen adayları virgülle ayırarak, sıralı oyları girin.</p>
+    <p class="text-center">Her satır aynı adayları içermelidir.</p>
+{/if}
 <textarea value={ornek} id="votesInput"
     class="{valid ? 'border-8 border-blue-300' : 'border-8 border-red-500'} 
     resize-none justify-self-center w-11/12 overflow-auto box-content rounded-md
@@ -134,7 +152,12 @@
   />
 </div>
 <div id="output" class="flex flex-col justify-center items-center px-4 gap-4">
-    <p><b>Candidates</b>: 
+    <p>
+    {#if !isTurkish }
+        <b>Candidates</b>: 
+    {:else}
+        <b>Adaylar</b>: 
+    {/if}
         {#if (ornek.split(`\n`).length>1) }
             {#each adaylar as aday}
                     <button class="kucukDugme btn-orange px-1 py-1 disabled:invisible" 
@@ -157,7 +180,11 @@
 
 <div id="sonuclar"
 class="grid-component md:col-start-2 self-start md:row-start-1">
-<h3>Social Welfare Rules</h3>
+    {#if !isTurkish }
+        <h3>Social Welfare Rules</h3>
+    {:else}
+        <h3>Sosyal Refah Kuralları</h3>
+    {/if}
     <button class="btn-orange w-full drop-shadow-md py-4  hover:-translate-y-0.5 active:scale-100 hover:scale-110 hover:drop-shadow-lg md:w-48" 
     on:click={valid? callModal(kemenyRule(voters)): false}>
         Kemeny
@@ -199,7 +226,11 @@ class="grid-component md:col-start-2 self-start md:row-start-1">
         Dodgson
     </button>
 
-    <h3>Social Choice Rules</h3>
+    {#if !isTurkish }
+        <h3>Social Choice Rules</h3>
+    {:else}
+        <h3>Sosyal Seçim Kuralları</h3>
+    {/if}
 
     <button class="btn-orange w-full drop-shadow-md py-4  hover:-translate-y-0.5 active:scale-100 hover:scale-110 hover:drop-shadow-lg md:w-48" 
     on:click={valid? callModal(skorCRule(voters,bordaSkor)): false}>
