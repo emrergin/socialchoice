@@ -65,7 +65,13 @@
             let bitisNoktasi=data.split(`,`)[1];
             let baslangicAlternative = points.locations.filter(a=>a.name===baslangicNoktasi)[0];
             let bitisAlternative = points.locations.filter(a=>a.name===bitisNoktasi)[0];
-            let x1=baslangicAlternative.loc_x;
+            let x1=0;
+            try{
+                x1=baslangicAlternative.loc_x;
+            }
+            catch{
+                console.log(data);
+            }
             let y1=baslangicAlternative.loc_y;            
             let x2=(bitisAlternative.loc_x*points.pointPercentage2/100)+x1*(1-points.pointPercentage2/100);
             let y2=(bitisAlternative.loc_y*points.pointPercentage2/100)+y1*(1-points.pointPercentage2/100);

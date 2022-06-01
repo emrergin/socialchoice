@@ -203,7 +203,7 @@ function dodgsonSkorumsu(ranks,onlyFirst=false){
 
 	loop1: while(Object.keys(output).length<m){
 		if (queue.length>1000){
-			return (`This specific profile is too complex for Dodgson. Try other rules.`);
+			return (`ComplexityError`);
 		}
 
 		for (let profile of queue){

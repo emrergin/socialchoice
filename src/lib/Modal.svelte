@@ -1,6 +1,14 @@
 <script>
 	export let message= ['A,B,C,D'];
     export let isTurkish= false;
+    if (message[0]===`ComplexityError`){
+            if (!isTurkish){
+                message[0]=`This specific profile is too complex for Dodgson. Try other rules.`;
+            }
+            else{
+                message[0]=`Bu toplum bu kural için fazla karmaşık. Başka kurallar deneyin.`;
+            }
+    }
 
     import { createEventDispatcher } from 'svelte';
     const dispatch = createEventDispatcher();
@@ -11,7 +19,7 @@
 
     function randomize(){
         message=[message[Math.floor(Math.random()*message.length)]]
-    }
+    }   
 </script>
 
 <div class="modal-background">
