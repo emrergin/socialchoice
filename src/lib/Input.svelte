@@ -1,6 +1,6 @@
 <script>
     import { onMount } from 'svelte';
-    import { kemenyRule,skorWRule,bordaSkor,minMaxSkor, skorCRule, dodgsonSkorumsu, tournament
+    import { kemenyRule,skorWRule,bordaSkor,minMaxSkor, skorCRule, dodgsonScoreLike, tournament
     ,slaterRule, tidemanRule , schulzeRule, copelandSkor } from '../modules/fonksiyonlar';
     import { minMaxProfile, slaterProfile, kemenyProfile, copelandProfile,
         tidemanProfile, schulzeProfile,dodgsonProfile } from '../modules/exampleProfiles';
@@ -222,7 +222,7 @@ class="grid-component md:col-start-2 self-start md:row-start-1">
 
 
     <button class="btn-orange w-full drop-shadow-md py-4  hover:-translate-y-0.5 active:scale-100 hover:scale-110 hover:drop-shadow-lg md:w-48" 
-    on:click={valid?  callModal(skorWRule(voters,dodgsonSkorumsu)): false}>
+    on:click={valid?  callModal(skorWRule(voters,dodgsonScoreLike)): false}>
         Dodgson
     </button>
 
@@ -248,7 +248,7 @@ class="grid-component md:col-start-2 self-start md:row-start-1">
     </button>
 
     <button class="btn-orange w-full drop-shadow-md py-4  hover:-translate-y-0.5 active:scale-100 hover:scale-110 hover:drop-shadow-lg md:w-48" 
-    on:click={valid?  callModal(skorCRule(voters,dodgsonSkorumsu,true)): false}>
+    on:click={valid?  callModal(skorCRule(voters,dodgsonScoreLike,true)): false}>
         Dodgson
     </button>
 

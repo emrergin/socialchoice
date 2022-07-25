@@ -190,19 +190,19 @@ function schulzeRule(ranks){
 	return(adaylar);
 }
 
-function dodgsonSkorumsu(ranks,onlyFirst=false){
+function dodgsonScoreLike(ranks,onlyFirst=false){
 	//named as such since does not return the accurate score for the last alternative(s).
 	let deepness=0;
 	let queue=[ranks];
 	let queue2=[];
 	let output={};
-	let alreadyChecked=[convertProfileToString(ranks)];
+	let alreadyChecked=new Set([convertProfileToString(ranks)]);
 	let m=ranks[0].length;
 	let n=ranks.length;
 	let limit= onlyFirst? 1:m-1;
 
 	loop1: while(Object.keys(output).length<m){
-		if (queue.length>1000){
+		if (queue.length>1500){
 			return (`ComplexityError`);
 		}
 
@@ -232,13 +232,13 @@ function dodgsonSkorumsu(ranks,onlyFirst=false){
 		}		
 
 		for (let pro of queue){				
-			let yakindakiler = swapFinder(pro);
-			for (let eachSwap of yakindakiler){
-				let deneme=eachSwap.map(a=>a.join(`,`));
-				deneme=deneme.sort().toString();
-				if (!(alreadyChecked.includes(deneme))){
+			let adjacentProfile = swapFinder(pro);
+			for (let eachSwap of adjacentProfile){
+				let trial=eachSwap.map(a=>a.join(`,`));
+				trial=trial.sort().toString();
+				if (!(alreadyChecked.has(trial))){
 					queue2.push(eachSwap);
-					alreadyChecked.push(convertProfileToString(eachSwap));
+					alreadyChecked.add(convertProfileToString(eachSwap));
 				}
 			}
 		}
@@ -275,9 +275,9 @@ function dodgsonSkorumsu(ranks,onlyFirst=false){
 	}
 
 	function convertProfileToString(voters){
-		let kayit=voters.map(a=>a.join(`,`));
-		kayit=kayit.sort().toString();
-		return kayit;
+		let record=voters.map(a=>a.join(`,`));
+		record=record.sort().toString();
+		return record;
 	}
 }
 
@@ -376,5 +376,5 @@ function skorCRule(ranks,fonksiyon){
 }
 
 
-export {kemenyRule, bordaSkor,minMaxSkor, dodgsonSkorumsu, skorWRule, skorCRule
+export {kemenyRule, bordaSkor,minMaxSkor, dodgsonScoreLike, skorWRule, skorCRule
 	,slaterRule ,tidemanRule , schulzeRule, copelandSkor ,tournament};
