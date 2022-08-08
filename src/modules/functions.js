@@ -7,47 +7,47 @@ function prepareInput(inputArray){
 
 function kemenyRule(ranks){
 	ranks=prepareInput(ranks);
-	let uzakliklar=[];
-	const butunRanklar=permutator(ranks[0]);
+	let distances=[];
+	const allRanks=permutator(ranks[0]);
 
-	for (let ruler of butunRanklar){
+	for (let ruler of allRanks){
 		let pairs1=pairsString(ruler);
 		let singleDistance=0;
 		for (let voter of ranks){
 			let pairs2=pairsString(voter);
 			singleDistance+=setDifference(pairs1,pairs2);
 		}
-		uzakliklar.push({ruler:ruler,uzaklik:singleDistance});
+		distances.push({ruler:ruler,uzaklik:singleDistance});
 	}
 	
-	let minimumUzaklik=Math.min(...uzakliklar.map(a=>a.uzaklik));
-	return(uzakliklar.filter(a=>a.uzaklik===minimumUzaklik).map(a=>a.ruler));
+	let minimumUzaklik=Math.min(...distances.map(a=>a.uzaklik));
+	return(distances.filter(a=>a.uzaklik===minimumUzaklik).map(a=>a.ruler));
 }
 
 function tournament(ranks,readytoCalculate=true,returnScores=false){
 	readytoCalculate? ``: ranks=prepareInput(ranks);
-	let butunCiftler = pairs(ranks[0]);
-	let ciftlerVeSkorlar={};
-	for (let cift of butunCiftler){
-		let zaferSayisi=0;
+	let allPairs = pairs(ranks[0]);
+	let pairsAndScores={};
+	for (let pair of allPairs){
+		let numberOfWins=0;
 		for (let voter of ranks){
-			if (voter.indexOf(cift[0])<voter.indexOf(cift[1])){
-				zaferSayisi++;
+			if (voter.indexOf(pair[0])<voter.indexOf(pair[1])){
+				numberOfWins++;
 			}
 			else{
-				zaferSayisi--;
+				numberOfWins--;
 			}
 		}
-		if (zaferSayisi<0){
-			cift=cift.reverse();
+		if (numberOfWins<0){
+			pair=pair.reverse();
 		}
-		ciftlerVeSkorlar[cift]=Math.abs(zaferSayisi);					
+		pairsAndScores[pair]=Math.abs(numberOfWins);					
 	}
 	if (returnScores){
-		return ciftlerVeSkorlar;
+		return pairsAndScores;
 	}
 	else{
-		return (Object.getOwnPropertyNames(ciftlerVeSkorlar).filter(a=>ciftlerVeSkorlar[a]!==0).map(a=>a.split(`,`)))
+		return (Object.getOwnPropertyNames(pairsAndScores).filter(a=>pairsAndScores[a]!==0).map(a=>a.split(`,`)))
 	}
 }
 
@@ -55,26 +55,26 @@ function slaterRule(ranks){
 	ranks=prepareInput(ranks);	
 	let tur= tournament(ranks).map(a=>`${a}`);
 
-	const butunRanklar=permutator(ranks[0]);
-	let uzakliklar=[];
+	const allRanks=permutator(ranks[0]);
+	let distances=[];
 	
-	for (let ruler of butunRanklar){
+	for (let ruler of allRanks){
 		let pairs1=pairsString(ruler);
-		let uzaklik=setDifference(pairs1,tur);
-		uzakliklar.push({ruler:ruler,uzaklik:uzaklik});		
+		let distance=setDifference(pairs1,tur);
+		distances.push({ruler,distance});		
 	}
 	
-	let minimumUzaklik=Math.min(...uzakliklar.map(a=>a.uzaklik));
-	return(uzakliklar.filter(a=>a.uzaklik===minimumUzaklik).map(a=>a.ruler));
+	let minimumDistance=Math.min(...distances.map(a=>a.distance));
+	return(distances.filter(a=>a.distance===minimumDistance).map(a=>a.ruler));
 }
 
 function tidemanRule(ranks){
 	ranks=prepareInput(ranks);
-	let ciftlerVeSkorlar = tournament(ranks,true,true);
+	let pairsAndScores = tournament(ranks,true,true);
 
-	let allPairs = Object.getOwnPropertyNames(ciftlerVeSkorlar);
+	let allPairs = Object.getOwnPropertyNames(pairsAndScores);
 	let allPairsOfPairs = pairs(allPairs);
-	console.log(ciftlerVeSkorlar);
+	console.log(pairsAndScores);
 	let allPermutationsOfRanks=permutator(allPairs);
 
 	let probablePermutations=[];
@@ -83,10 +83,10 @@ function tidemanRule(ranks){
 		for (let pairOfPair of allPairsOfPairs){
 			const i1=order.indexOf(pairOfPair[0]);
 			const i2=order.indexOf(pairOfPair[1]);
-			const skor1=ciftlerVeSkorlar[pairOfPair[0]];
-			const skor2=ciftlerVeSkorlar[pairOfPair[1]];
+			const score1=pairsAndScores[pairOfPair[0]];
+			const score2=pairsAndScores[pairOfPair[1]];
 					
-			if ((((i1>i2)&&(skor1>skor2))||((i1<i2)&&(skor1<skor2)))){
+			if ((((i1>i2)&&(score1>score2))||((i1<i2)&&(score1<score2)))){
 				continue loop1;
 			}	
 		}
@@ -110,27 +110,27 @@ function tidemanRule(ranks){
 		allListsOfPairs.push(result)
 	}
 
-	let adaylar=[];
-	const butunRanklar=permutator(ranks[0]);
+	let candidates=[];
+	const allRanks=permutator(ranks[0]);
 
-	loop1: for (let ruler of butunRanklar){
+	loop1: for (let ruler of allRanks){
 		for (let pairsFound of allListsOfPairs){					
 			if (pairs(ruler).sort().join(`,`)===pairsFound.sort().join(`,`)){
-				adaylar.push(ruler);
+				candidates.push(ruler);
 				continue loop1;
 			}			
 		}				
 	}
-	return(adaylar);	
+	return(candidates);	
 }
 
 function schulzeRule(ranks){
 	let numberOfVoters=ranks.length;
 	ranks=prepareInput(ranks);
-	let ciftlerVeSkorlar = tournament(ranks,true,true);
+	let pairsAndScores = tournament(ranks,true,true);
 	let directPaths={};
-	for (let pairOfPair in ciftlerVeSkorlar){
-		let margin=ciftlerVeSkorlar[pairOfPair];
+	for (let pairOfPair in pairsAndScores){
+		let margin=pairsAndScores[pairOfPair];
 		let lesserVotes=(numberOfVoters-margin)/2;
 		let greaterVotes=lesserVotes+margin;
 		directPaths[`${pairOfPair.split(`,`)}`]=greaterVotes;
@@ -175,20 +175,22 @@ function schulzeRule(ranks){
 		}
 	}
 
-	let adaylar=[];
-	const butunRanklar=permutator(ranks[0]);
+	let candidates=[];
+	const allRanks=permutator(ranks[0]);
 
-	loop1: for (let ruler of butunRanklar){
+	loop1: for (let ruler of allRanks){
 		for (let pairsFound of pathWins){	
 			let sepPairs=pairsFound.split(`,`);		
 			if (ruler.indexOf(sepPairs[0])>ruler.indexOf(sepPairs[1])){
 				continue loop1;
 			}			
 		}		
-		adaylar.push(ruler);		
+		candidates.push(ruler);		
 	}
-	return(adaylar);
+	return(candidates);
 }
+
+let condorcetCache=new Map([]);
 
 function dodgsonScoreLike(ranks,onlyFirst=false){
 	//named as such since does not return the accurate score for the last alternative(s).
@@ -197,6 +199,7 @@ function dodgsonScoreLike(ranks,onlyFirst=false){
 	let queue2=[];
 	let output={};
 	let alreadyChecked=new Set([convertProfileToString(ranks)]);
+	
 	let m=ranks[0].length;
 	let n=ranks.length;
 	let limit= onlyFirst? 1:m-1;
@@ -252,11 +255,17 @@ function dodgsonScoreLike(ranks,onlyFirst=false){
 	return output;
 
 	function condorcetWinner(ranks){
+		if (condorcetCache[convertProfileToString(ranks)]!==undefined){
+			return condorcetCache[convertProfileToString(ranks)];
+		}
 		let result = tournament(ranks).map(a=>a[0]).reduce(function (acc, curr) {
 			return acc[curr] ? ++acc[curr] : acc[curr] = 1, acc
 		  }, {});
 		result = Object.entries(result).filter(a=>a[1]===ranks[0].length-1);		
-		if (result.length) {return(result[0][0]);}
+		if (result.length) {
+			condorcetCache[convertProfileToString(ranks)]=result[0][0];
+			return(result[0][0]);
+		}
 		else{return null;}	
 	}
 	function swapFinder(voters){
@@ -281,100 +290,100 @@ function dodgsonScoreLike(ranks,onlyFirst=false){
 	}
 }
 
-function copelandSkor(ranks){
+function copelandScore(ranks){
 	let result = tournament(ranks).map(a=>a[0]).reduce(function (acc, curr) {
 		return acc[curr] ? ++acc[curr] : acc[curr] = 1, acc
 	  }, {});
 
-	for (let eleman of ranks[0]){
-		if(!result.hasOwnProperty(eleman)){
-			result[eleman]=0;
+	for (let alternative of ranks[0]){
+		if(!result.hasOwnProperty(alternative)){
+			result[alternative]=0;
 		}
 	}
 
 	return result;
 }
 
-function bordaSkor(ranks){
-	let uzunluk=ranks[0].length;
+function bordaScore(ranks){
+	let length=ranks[0].length;
 	let nObj={};
 	
-	for (let eleman of ranks[0]){
-		let skor=0;
+	for (let alternative of ranks[0]){
+		let score=0;
 		for (let voter of ranks){
-			skor+=uzunluk-voter.indexOf(eleman);
+			score+=length-voter.indexOf(alternative);
 		}
-		nObj[eleman]=skor;
+		nObj[alternative]=score;
 	}
 	return nObj;
 }
 
-function minMaxSkor(ranks){
+function minMaxScore(ranks){
 	let nObj={};
 	
-	for (let eleman1 of ranks[0]){
-		let skor=0;
-		for (let eleman2 of ranks[0]){
-			let zaferSayisi=0;
+	for (let alternative1 of ranks[0]){
+		let score=0;
+		for (let alternative2 of ranks[0]){
+			let numberOfWins=0;
 			for (let voter of ranks){
-				if (voter.indexOf(eleman2)<voter.indexOf(eleman1)){
-					zaferSayisi++;
+				if (voter.indexOf(alternative2)<voter.indexOf(alternative1)){
+					numberOfWins++;
 				}
 			}
-			if (zaferSayisi>skor){skor=zaferSayisi;}
+			if (numberOfWins>score){score=numberOfWins;}
 		}
-		nObj[eleman1]=-skor;
+		nObj[alternative1]=-score;
 	}
 
 	return nObj;
 }
 
 
-function skorWRule(ranks,fonksiyon){
+function scoreWRule(ranks,functionToUse){
 	ranks=prepareInput(ranks);	
-	const nObj=fonksiyon(ranks);
+	const nObj=functionToUse(ranks);
 	if (typeof nObj === "string")	{
 		return [nObj];
 	}
 
-	let adaylar=[];
-	const butunRanklar=permutator(ranks[0]);
-	const butunCiftler = pairs(ranks[0]);
-	loop1: for (let ruler of butunRanklar){
-		for (let cift of butunCiftler){
-			const i1=ruler.indexOf(cift[0]);
-			const i2=ruler.indexOf(cift[1]);
-			const skor1=nObj[cift[0]];
-			const skor2=nObj[cift[1]];			
-			if (((i1>i2)&&(skor1>skor2))||((i1<i2)&&(skor1<skor2))){
+	let candidates=[];
+	const allRanks=permutator(ranks[0]);
+	const allPairs = pairs(ranks[0]);
+	loop1: for (let ruler of allRanks){
+		for (let pair of allPairs){
+			const i1=ruler.indexOf(pair[0]);
+			const i2=ruler.indexOf(pair[1]);
+			const score1=nObj[pair[0]];
+			const score2=nObj[pair[1]];			
+			if (((i1>i2)&&(score1>score2))||((i1<i2)&&(score1<score2))){
 				continue loop1;
 			}			
 		}
-		adaylar.push(ruler);		
+		candidates.push(ruler);		
 	}
 
-	return(adaylar);
+	return(candidates);
 }
 
-function skorCRule(ranks,fonksiyon){
+function scoreCRule(ranks,functionToUse){
 	ranks=prepareInput(ranks);	
-	const nObj=fonksiyon(ranks);
+	const nObj=functionToUse(ranks);
 	if (typeof nObj === "string")	{
 		return [nObj];
 	}
-	let adaylar=[];
+	let candidates=[];
 
 	let arr = Object.values(nObj);
 	let max = Math.max(...arr);
 
 	Object.keys(nObj).forEach(key => {
 		if (nObj[key]===max){
-			adaylar.push(key);
+			candidates.push(key);
 		}
 	})
-	return adaylar;
+	return candidates;
 }
 
 
-export {kemenyRule, bordaSkor,minMaxSkor, dodgsonScoreLike, skorWRule, skorCRule
-	,slaterRule ,tidemanRule , schulzeRule, copelandSkor ,tournament};
+export {kemenyRule, bordaScore,minMaxScore, dodgsonScoreLike, scoreWRule, scoreCRule
+	,slaterRule ,tidemanRule , schulzeRule, copelandScore ,tournament};

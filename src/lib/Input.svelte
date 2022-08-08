@@ -1,7 +1,7 @@
 <script>
     import { onMount } from 'svelte';
-    import { kemenyRule,skorWRule,bordaSkor,minMaxSkor, skorCRule, dodgsonScoreLike, tournament
-    ,slaterRule, tidemanRule , schulzeRule, copelandSkor } from '../modules/fonksiyonlar';
+    import { kemenyRule,scoreWRule,bordaScore,minMaxScore, scoreCRule, dodgsonScoreLike, tournament
+    ,slaterRule, tidemanRule , schulzeRule, copelandScore } from '../modules/functions';
     import { minMaxProfile, slaterProfile, kemenyProfile, copelandProfile,
         tidemanProfile, schulzeProfile,dodgsonProfile } from '../modules/exampleProfiles';
     import { isPermutationArray } from '../modules/social_tools';
@@ -25,14 +25,14 @@
         voters= 
         // slaterProfile;
         // tidemanProfile;
-        [
-            "Alastair,Brian,Chris",
-            "Chris,Brian,Alastair",
-            "Chris,Brian,Alastair",
-            "Brian,Alastair,Chris"
-        ];
+        // [
+        //     "Alastair,Brian,Chris",
+        //     "Chris,Brian,Alastair",
+        //     "Chris,Brian,Alastair",
+        //     "Brian,Alastair,Chris"
+        // ];
         // schulzeProfile;
-        // dodgsonProfile;
+        dodgsonProfile;
         // [
         //     "A,B,C",
         //     "A,B,C"
@@ -191,12 +191,12 @@ class="grid-component md:col-start-2 self-start md:row-start-1">
     </button>
 
     <button class="btn-orange w-full drop-shadow-md py-4  hover:-translate-y-0.5 active:scale-100 hover:scale-110 hover:drop-shadow-lg md:w-48" 
-    on:click={valid? callModal(skorWRule(voters,bordaSkor)): false}>
+    on:click={valid? callModal(scoreWRule(voters,bordaScore)): false}>
         Borda
     </button>
 
     <button class="btn-orange w-full drop-shadow-md py-4  hover:-translate-y-0.5 active:scale-100 hover:scale-110 hover:drop-shadow-lg md:w-48" 
-    on:click={valid? callModal(skorWRule(voters,minMaxSkor)): false}>
+    on:click={valid? callModal(scoreWRule(voters,minMaxScore)): false}>
         Minmax
     </button>
 
@@ -206,7 +206,7 @@ class="grid-component md:col-start-2 self-start md:row-start-1">
     </button>
 
     <button class="btn-orange w-full drop-shadow-md py-4  hover:-translate-y-0.5 active:scale-100 hover:scale-110 hover:drop-shadow-lg md:w-48" 
-    on:click={valid?  callModal(skorWRule(voters,copelandSkor)): false}>
+    on:click={valid?  callModal(scoreWRule(voters,copelandScore)): false}>
         Copeland
     </button>
 
@@ -222,7 +222,7 @@ class="grid-component md:col-start-2 self-start md:row-start-1">
 
 
     <button class="btn-orange w-full drop-shadow-md py-4  hover:-translate-y-0.5 active:scale-100 hover:scale-110 hover:drop-shadow-lg md:w-48" 
-    on:click={valid?  callModal(skorWRule(voters,dodgsonScoreLike)): false}>
+    on:click={valid?  callModal(scoreWRule(voters,dodgsonScoreLike)): false}>
         Dodgson
     </button>
 
@@ -233,22 +233,22 @@ class="grid-component md:col-start-2 self-start md:row-start-1">
     {/if}
 
     <button class="btn-orange w-full drop-shadow-md py-4  hover:-translate-y-0.5 active:scale-100 hover:scale-110 hover:drop-shadow-lg md:w-48" 
-    on:click={valid? callModal(skorCRule(voters,bordaSkor)): false}>
+    on:click={valid? callModal(scoreCRule(voters,bordaScore)): false}>
         Borda
     </button>
 
     <button class="btn-orange w-full drop-shadow-md py-4  hover:-translate-y-0.5 active:scale-100 hover:scale-110 hover:drop-shadow-lg md:w-48" 
-    on:click={valid? callModal(skorCRule(voters,minMaxSkor)): false}>
+    on:click={valid? callModal(scoreCRule(voters,minMaxScore)): false}>
         Minmax
     </button>
 
     <button class="btn-orange w-full drop-shadow-md py-4  hover:-translate-y-0.5 active:scale-100 hover:scale-110 hover:drop-shadow-lg md:w-48" 
-    on:click={valid?  callModal(skorCRule(voters,copelandSkor)): false}>
+    on:click={valid?  callModal(scoreCRule(voters,copelandScore)): false}>
         Copeland
     </button>
 
     <button class="btn-orange w-full drop-shadow-md py-4  hover:-translate-y-0.5 active:scale-100 hover:scale-110 hover:drop-shadow-lg md:w-48" 
-    on:click={valid?  callModal(skorCRule(voters,dodgsonScoreLike,true)): false}>
+    on:click={valid?  callModal(scoreCRule(voters,dodgsonScoreLike,true)): false}>
         Dodgson
     </button>
 

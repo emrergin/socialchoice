@@ -32,7 +32,6 @@ function isPermutation(s1, s2) {
     return false;
   }
 
-  // console.log(s1.split("").sort().toString(),s2.split("").sort().toString())
   return s1.split("").sort().toString() === s2.split("").sort().toString();
 }
 
@@ -57,7 +56,7 @@ function setDifference(A, B) {
 
   for (const v of setB.values()) {
     if (!setA.delete(v)) {
-        result.push(v);
+      result.push(v);
     }
   }
 
